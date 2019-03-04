@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+		<style>
+			.quick-button {
+				background: #{themeService.leftButtonColor};
+			}
+			
+			.quick-button:hover {
+				background: #{themeService.leftButtonColorOn};
+			}
+		</style>
+		
+		<h:panelGroup rendered="#{konfig.vertretungVisible}">
+			<a href="vertretungsplan.pdf" target="_blank">
+				<div class="quick-button card" style="padding:20px 5px 20px 10px">
+					<div class="white-text">
+						<h6 style="margin:0"><i class="material-icons left" style="font-size:15pt">description</i>Vertretungsplan</h6>
+					</div>
+				</div>
+			</a>
+		</h:panelGroup>
+
+		<a href="termine.xhtml">
+			<div class="quick-button card" style="padding:20px 5px 20px 10px;margin-top:30px">
+				<div class="white-text">
+					<h6 style="margin:0"><i class="material-icons left" style="font-size:15pt">date_range</i>Termine</h6>
+				</div>
+			</div>
+		</a>
+
+	</ui:composition>
+</body>
+</html>

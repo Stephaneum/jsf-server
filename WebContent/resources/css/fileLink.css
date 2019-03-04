@@ -1,0 +1,8 @@
+.ui-commandlink {
+	text-decoration: none;
+}
+
+.ui-commandlink:hover {
+	text-decoration: underline;
+	color: green;
+}

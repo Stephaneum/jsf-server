@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:head>
+		<title>Suche#{konfig.suffixTitle}</title>
+		<f:metadata>
+    		<f:viewAction action="#{weiterleitung.search}" />
+		</f:metadata>
+		<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+		<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+		<h:outputStylesheet library="css" name="#{konfig.css}" />
+		<h:outputScript library="js" name="topMenu.js" />
+		<style>
+			.linkOpen:hover { 
+	    		color: green;
+			}
+			.linkOpen {
+				text-decoration: underline;
+			}
+			.linkNoUnderline:hover { 
+	    		color: green;
+	    		text-decoration: underline;
+			}
+			.linkNoUnderline { 
+				color: #4f4f4f;
+	    		text-decoration: none;
+			}
+			ul li {
+				margin-bottom:15px;
+			}
+			.marquee {
+			    width: 100%;
+				color: black;
+			    white-space: nowrap;
+			    overflow: hidden;
+			    box-sizing: border-box;
+			}
+			.marquee p {
+			    display: inline-block;
+			    padding-left: 100%;
+			    animation: marquee 15s linear infinite;
+			}
+			.marquee p:hover {
+	    		animation-play-state: paused
+			}
+			@keyframes marquee {
+			    0%   { transform: translate(0, 0); }
+			    100% { transform: translate(-100%, 0); }
+			}
+		</style>
+	</h:head>
+	
+	<h:body style="background-color:#{themeService.backgroundColor};">
+		<p:growl id="message" showDetail="true">
+			<p:autoUpdate />
+		</p:growl>
+		
+		<div id="hidden-div">
+		
+<!-- Side Menu -->
+			<h:form style="position:fixed;z-index:100">
+				<p:menu model="#{sideMenu.model}" style="font-size:11pt;width:160px;"/>
+			</h:form>
+			
+			<p:panel style="position:absolute;top:150px;width:155px" rendered="#{konfig.vertretungVisible and !sideMenu.loggedIn}">
+				<p:button href="#{konfig.vertretungURL}" target="_blank" value="Vertretungsplan" icon="ui-icon-document" style="font-size:11pt;margin-left:-15px;margin-bottom:5px"/>
+				<br/>
+				<div style="text-align:center">
+					<p:outputLabel value="#{konfig.vertretungInfo}" style="font-size:11pt;"/>
+				</div>
+			</p:panel>
+			
+<!-- Logos -->
+			<ui:insert>
+		  		<ui:include src="component_logos.xhtml" />
+			</ui:insert>	
+			
+			<p:panel id="big-div">
+
+				<br/>
+<!-- Top Menu -->
+				<h:form>
+					<p:menubar styleClass="centeredMenuBar ui-widget-header ui-corner-all" model="#{topMenu.model}" />
+				</h:form>
+				
+				<br/><br/><br/>
+				
+				<div align="center">
+					<h:graphicImage value="/resources/img/stephaneum.jpg" style="border-radius: 10px;" rendered="#{beitragList.bild == null}"/>
+					<h:graphicImage value="images/?id=#{beitragList.bild.datei_name_mit_id}" style="border-radius: 10px;max-width:950px" rendered="#{beitragList.bild != null}"/>
+				</div>
+				
+				<br/><br/>
+				
+				<h:panelGroup layout="block" styleClass="marquee" rendered="#{not empty konfig.liveTicker}">
+					<p>#{konfig.liveTicker}</p>
+				</h:panelGroup>
+				
+				<!-- Suche -->
+				<div align="right">
+					<h:form rendered="#{beitragSearch.searchBegin}">
+						<p:remoteCommand name="search" action="#{beitragSearch.search}"/>
+						<p:inputText id="inputSearch" placeholder="suchen" value="#{beitragSearch.keyWord}" size="20" style="display:block;font-size:10pt;height:13px;
+													position:relative;right:5px;top:28px"
+													onkeypress="if (event.keyCode == 13) { search(); return false; }"/>
+						<p:tooltip for="inputSearch" showEvent="focus" hideEvent="blur" value="Enter drücken, um Suche zu starten." style="font-size:10pt"/>
+					</h:form>
+					
+				</div>
+					
+			<!-- AB HIER BEGINNEN DIE BEITRÄGE (SUCHE) -->
+			
+				<h:form rendered="#{beitragSearch.searchBegin}">
+					<p:dataGrid var="r" value="#{beitragSearch.beitrag}"
+						columns="1" rows="5" paginator="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} pro Seite"
+						rowsPerPageTemplate="5,10,15,20"
+						paginatorPosition="bottom"
+						emptyMessage="Keine Treffer.">
+						
+						<f:facet name="header">
+							<p:outputLabel value="#{beitragSearch.anzahlSuchergebnisse} Suchergebnisse für &quot;#{beitragSearch.keyWord}&quot;" rendered="#{!(beitragSearch.anzahlSuchergebnisse eq 1)}"/>
+							<p:outputLabel value="#{beitragSearch.anzahlSuchergebnisse} Suchergebnis für &quot;#{beitragSearch.keyWord}&quot;" rendered="#{beitragSearch.anzahlSuchergebnisse eq 1}"/>	 
+						</f:facet>
+						
+						<div class="beitrag-div" style="padding-left:30px;padding-right:30px;background-color: rgba(255,255,255,0.3)">
+							<br/>
+							
+							<!-- Titel, Datum (und 'bearbeitet von) sind gleich, egal mit oder ohne Bilder -->
+							<h:outputText value="&#x3C;a href=&#x22;beitrag.xhtml?id=#{r.beitrag_id}&amp;suche=1&#x22; class=&#x22;linkOpen&#x22; style=&#x22;font-size:16pt&#x22;&#x3E;#{r.titel}&#x3C;/a&#x3E;" escape="false"/>
+							<br/>
+							<p:outputLabel value="#{r.datum}" style="font-size:10pt;"/>
+							<p:outputLabel value=" / " style="font-size:10pt"/>
+							<h:link value="#{r.gruppe.name}" outcome="home.xhtml?id=#{r.gruppe.gruppe_id}" styleClass="linkNoUnderline" style="font-size:10pt;"/>
+							<p:outputLabel value=" / " style="font-size:10pt"/>
+							<p:outputLabel value="#{r.percentageString}% Übereinstimmung" style="font-size:10pt;"/>
+							
+							<!-- Ein Break, falls keine Bilder -->
+							<h:outputText value="&lt;br/&gt;&lt;br/&gt;" escape="false" rendered="#{empty r.bilder}"/>
+							
+							<!-- Vorschautext, falls keine Bilder -->
+							<h:outputText style="word-wrap: break-word;" escape="false" value="#{r.vorschauText}" rendered="#{empty r.bilder}"/>
+							<br/>
+							<!-- 'weiterlesen', falls keine Bilder -->
+							<p style="text-align: right;">
+								<h:link value="weiterlesen" outcome="beitrag.xhtml?id=#{r.beitrag_id}&amp;suche=1" styleClass="linkOpen" style="font-size:12pt;" rendered="#{empty r.bilder and not r.password}"/>
+							</p>
+							
+							<!-- dieser Panelgrid wird angezeigt, wenn Bilder vorhanden sind -->
+							<p:panelGrid styleClass="beitrag-text-div" rendered="#{not empty r.bilder and not r.password}">
+								<p:row style="border: none !important;background: transparent !important;">
+									<p:column styleClass="beitrag-text-div-1" style="border: none !important;" border="0">
+										<h:outputText escape="false" value="#{r.vorschauText}"/>
+										<br/>
+										<p style="text-align: right;">
+											<h:link value="weiterlesen" outcome="beitrag.xhtml?id=#{r.beitrag_id}&amp;suche=1" styleClass="linkOpen"/>
+										</p>
+									</p:column>
+									<p:column style="text-align:right;width:150px;border: none !important;vertical-align: top;overflow:hidden">
+										<h:link outcome="beitrag" rendered="#{r.bilderAnzahl gt 1}">
+									        <p:imageSwitch effect="fade" id="fadeEffect" slideshowSpeed="4000">
+											    <ui:repeat value="#{r.dateiList}" var="image">
+											    	<h:graphicImage value="images/?id=#{image.datei_name_mit_id}" alt="#{image.datei_name_ohne_endung}" title="" width="150"/>
+											    </ui:repeat>
+											</p:imageSwitch>
+									        <f:param name="id" value="#{r.beitrag_id}" />
+									        <f:param name="suche" value="1" />
+										</h:link>
+										<h:link outcome="beitrag" rendered="#{r.bilderAnzahl eq 1}">
+									        <h:graphicImage value="images/?id=#{r.bilder[0].datei_name_mit_id}" width="150" />
+									        <f:param name="id" value="#{r.beitrag_id}" />
+									        <f:param name="suche" value="1" />
+										</h:link>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<br/>
+						</div>
+					</p:dataGrid>
+				</h:form>
+				
+				<br/>
+			</p:panel>
+			<br/>
+			<div id="bottom">
+				<h:link outcome="kontakt" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Kontakt"/>
+				<p:outputLabel style="font-size:10pt" value=" | "/>
+				<h:link outcome="impressum" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Impressum"/>
+				<p:outputLabel style="font-size:10pt" value=" | "/>
+				<h:link outcome="sitemap" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Sitemap"/>
+				<br/><br/>
+				<h:outputText style="font-size:12pt;word-wrap: break-word;" escape="false" value="#{konfig.bottomText}"/>
+			</div>
+			<br/>
+		</div>
+	</h:body>
+</html>

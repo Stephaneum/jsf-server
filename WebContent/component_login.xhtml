@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+    <body>
+	    <ui:composition>
+	    
+			<h:outputScript library="js" name="timerLogin.js" />
+			<h:form rendered="#{authentifizierung.renderLogin and !authentifizierung.blockLogin}">
+								
+				<br/>
+				
+    			<p:inputText value="#{authentifizierung.loginEmail}" placeholder="E-Mail"/>
+				<p:password value="#{authentifizierung.loginPasswort}" placeholder="Passwort" />
+			    <br/><br/>
+			    <div style="float: right;">
+			    	<p:commandButton id="btnLogin" value="Login" action="#{authentifizierung.login}" style="width:100%;" icon="ui-icon-key"
+			    							update="panelLogin message"
+			    							widgetVar="widgetLogin"	onstart="PF('widgetLogin').disable()" oncomplete="PF('widgetLogin').enable()"/>
+			    </div>
+			    <div style="float: left;">
+			    	<p:commandButton value="Passwort vergessen" action="#{authentifizierung.startMissingPassword}" update="panelLogin"/>
+			    </div>
+				<br/>
+			</h:form>
+			
+			<h:form id="loginForm" rendered="#{authentifizierung.blockLogin}">
+				<p:remoteCommand name="loginUpdate" update="panelLogin" />
+				<br/><br/>
+				<div style="text-align:center">
+					<p:outputLabel id="loginTimer" value="Login ist für #{authentifizierung.blockLoginTime} Sekunden deaktiviert." style="font-style: italic;"/>
+				</div>
+				<br/><br/>
+			</h:form>
+			
+	  <!-- Passwort vergessen -->	 		
+			<h:form rendered="#{authentifizierung.renderCheckCode and !authentifizierung.renderCheckCode2 and !authentifizierung.renderCheckCode3}" style="text-align:center">
+				<br/>
+				<p:inputText
+					value="#{authentifizierung.loginEmail}"
+					placeholder="E-Mail"
+					style="width:190px" />
+	            <p:commandButton value="Code senden" action="#{authentifizierung.checkEmailExist()}" style="margin-left:10px" update="panelLogin message"
+	            					onclick="PF('btnVergessen1').disable();" widgetVar="btnVergessen1"/>
+				<br/><br/><br/>
+				
+				<p:outputLabel value="Das Senden kann bis zu" style="font-style: italic;"/>
+				<br/>
+				<p:outputLabel value="einige Minuten dauern." style="font-style: italic;"/>
+			</h:form>
+			
+			
+			
+			<h:form rendered="#{authentifizierung.renderCheckCode2 and !authentifizierung.renderCheckCode3}" style="text-align:center">
+				<br/>
+				<p:inputText 
+					value="#{authentifizierung.codePasswortVergessen}"
+					placeholder="Code"
+					style="width:190px" />
+				<p:commandButton value="Prüfen" action="#{authentifizierung.checkCodePasswortVergessen()}" style="margin-left:10px" update="panelLogin message"
+									onclick="PF('btnVergessen2').disable();" widgetVar="btnVergessen2"/>
+				
+				<br/><br/><br/>
+				
+				<p:outputLabel value="Die E-Mail kann auch im Spam-Ordner liegen." style="font-style: italic;"/>
+				
+			</h:form>
+			
+			<h:form rendered="#{authentifizierung.renderCheckCode3}" style="text-align:center">
+				<br/>
+					<p:password 
+						value="#{authentifizierung.loginPasswort}"
+						placeholder="neues Passwort"
+						style="width:190px"/>
+					<p:commandButton value="Bestätigen" action="#{authentifizierung.setNewPasswort()}" style="margin-left:10px" update="panelLogin message"/>
+				
+				<br/><br/><br/>
+				
+				<p:outputLabel value="Das alte Passwort wird für immer gelöscht." style="font-style: italic;"/>
+			
+			</h:form>
+			<br/>
+							
+	    </ui:composition>
+    </body>
+</html>
