@@ -1,18 +1,12 @@
 package servlet;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.time.*;
-import java.util.Calendar;
-import java.util.Date;
 
 import mysql.Datenbank;
 
