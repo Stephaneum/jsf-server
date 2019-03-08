@@ -73,15 +73,20 @@ public class SideMenu {
             	itemKonfig.setIcon("ui-icon-gear");
                 submenuAdmin.addElement(itemKonfig);
                 
-                DefaultMenuItem itemBackup = new DefaultMenuItem("Backup");
-                itemBackup.setHref("/"+URLManager.BACKUP+".xhtml");
-                itemBackup.setIcon("ui-icon-suitcase");
-                submenuAdmin.addElement(itemBackup);
+                DefaultMenuItem itemStatic = new DefaultMenuItem("Benutzerdef. Seiten");
+                itemStatic.setHref("/"+URLManager.STATIC+".xhtml");
+                itemStatic.setIcon("ui-icon-document ");
+                submenuAdmin.addElement(itemStatic);
                 
                 DefaultMenuItem itemRubrik = new DefaultMenuItem("Rubriken");
                 itemRubrik.setHref("/"+URLManager.ADMIN_RUBRIK+".xhtml");
                 itemRubrik.setIcon("ui-icon-bookmark");
                 submenuAdmin.addElement(itemRubrik);
+                
+                DefaultMenuItem itemBackup = new DefaultMenuItem("Backup");
+                itemBackup.setHref("/"+URLManager.BACKUP+".xhtml");
+                itemBackup.setIcon("ui-icon-suitcase");
+                submenuAdmin.addElement(itemBackup);
                 
                 DefaultMenuItem itemCodes = new DefaultMenuItem("Zugangscodes");
                 itemCodes.setHref("/"+URLManager.ZUGANGSCODE+".xhtml");

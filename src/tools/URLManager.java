@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 public class URLManager {
 	
 	final static public String SUCHE = "suche",
-			DUMMY = "admin_dummy", KONFIG = "admin_konfig", ADMIN_RUBRIK = "admin_rubriken", LOGS = "admin_logs", NUTZER = "admin_nutzer", ZUGANGSCODE = "admin_zugangscode",
+			DUMMY = "admin_dummy", KONFIG = "admin_konfig", STATIC = "admin_static", ADMIN_RUBRIK = "admin_rubriken", LOGS = "admin_logs", NUTZER = "admin_nutzer", ZUGANGSCODE = "admin_zugangscode",
 			BACKUP = "admin_backup",
 			STATISTIKEN = "statistiken", IMPRESSUM = "impressum", KONTAKT = "kontakt", SITEMAP = "sitemap", GESCHICHTE = "geschichte", VERTRETUNG = "vertretungsplan.pdf", TERMINE = "termine",
 			SQL = "sql", EINRICHTUNG = "einrichtung", UPDATE = "update", HOME = "home", HOME_BEITRAG = "beitrag", KLASSE = "klasse", LOGIN = "login", LOGOUT = "logout",

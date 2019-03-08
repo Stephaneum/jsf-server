@@ -65,6 +65,9 @@ public class Sitemap {
 				TreeNode admin = new DefaultTreeNode(new Knoten(null, "Admin", null, 12), root);
 				
 				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Konfiguration", URLManager.KONFIG, 11), admin));
+				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Benutzerdefinierte Seiten", URLManager.STATIC, 11), admin));
+				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Rubriken", URLManager.ADMIN_RUBRIK, 11), admin));
+				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Backup", URLManager.BACKUP, 11), admin));
 				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Zugangscodes", URLManager.ZUGANGSCODE, 11), admin));
 				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Dummys", URLManager.DUMMY, 11), admin));
 				admin.getChildren().add(new DefaultTreeNode(new Knoten(null, "Nutzer", URLManager.NUTZER, 11), admin));

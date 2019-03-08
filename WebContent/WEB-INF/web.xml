@@ -13,6 +13,11 @@
 	</servlet>
 	
 	<servlet>
+		<servlet-name>StaticServlet</servlet-name>
+		<servlet-class>servlet.StaticServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>DynamicImageServlet</servlet-name>
 		<servlet-class>servlet.DynamicImageServlet</servlet-class>
 	</servlet>
@@ -50,6 +55,11 @@
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>StaticServlet</servlet-name>
+		<url-pattern>/s/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
@@ -143,7 +153,7 @@
 	
 	<!-- unten den security-constraint Block kommentiert lassen, falls KEINE Weiterleitung 80->443 -->
 	
-	<security-constraint>
+	<!-- <security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Restricted URLs</web-resource-name>
 			<url-pattern>/*</url-pattern>
@@ -151,5 +161,5 @@
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
-	</security-constraint>
+	</security-constraint> -->
 </web-app>

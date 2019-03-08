@@ -292,6 +292,13 @@ public class Datei {
 			return "application/zip";
 		case "wav":
 			return "audio/x-wav";
+		case "htm":
+		case "html":
+			return "text/html";
+		case "js":
+			return "text/javascript";
+		case "css":
+			return "text/css";
 		default:
 			return null;
 		}

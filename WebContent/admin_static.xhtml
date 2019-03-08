@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<title>Benutzerdef. Seiten#{konfig.suffixTitle}</title>
+		<f:metadata>
+    		<f:viewAction action="#{weiterleitung.noAdmin}" />
+		</f:metadata>
+		<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+		<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+		<h:outputStylesheet library="css" name="#{konfig.css}" />
+		<h:outputScript library="js" name="topMenu.js" />
+	</h:head>
+	
+	<h:body style="background-color:#{themeService.backgroundColor};">
+	
+		<p:growl id="message" showDetail="true"/>
+		
+		<p:confirmDialog global="true">
+			<div style="text-align:center">
+				<p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			</div>
+		</p:confirmDialog>
+
+		<div id="hidden-div">
+		
+<!-- Side Menu -->
+			<h:form style="position:fixed;">
+				<p:menu model="#{sideMenu.model}" style="font-size:11pt;width:160px;"/>
+			</h:form>
+		
+			<p:panel id="big-div" rendered="#{konfig.admin}">
+					
+<!-- Top Menu -->
+				<h:form>
+					<p:menubar styleClass="centeredMenuBar ui-widget-header ui-corner-all" model="#{topMenu.model}"
+								style="top:0px;width:953px;position:fixed;transform: translateX(0%);z-index:+99;height:25px;" />
+				</h:form>							
+				
+				<br/><br/><br/>
+				
+				<h2 class="title" style="color:#4c4c4c;">Benutzerdefinierte Seiten</h2>
+				<br/>
+				
+				<p:panel style="text-align:center">
+					<p>#{staticBean.mainURL}/s/<span style="color: green; font-weight: bold">hallo-welt.html</span></p>
+					<p style="color: gray">greift auf folgende Datei zu:</p>
+					<p>#{staticBean.staticPath}/<span style="color: green; font-weight: bold">hallo-welt.html</span></p>
+				</p:panel>
+			
+				<br/><br/>
+				
+				Sie können Dateien über das Webmin-Portal (Port 10000), über FTP (z.B. über FileZilla) oder über SCP hochladen.
+				
+				<br/><br/>
+	 			
+			</p:panel>
+			<br/>
+			<div id="bottom">
+				<h:link outcome="kontakt" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Kontakt"/>
+				<p:outputLabel style="font-size:10pt" value=" | "/>
+				<h:link outcome="impressum" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Impressum"/>
+				<p:outputLabel style="font-size:10pt" value=" | "/>
+				<h:link outcome="sitemap" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Sitemap"/>
+				<br/><br/>
+				<h:outputText style="font-size:12pt;word-wrap: break-word;" escape="false" value="#{konfig.bottomText}"/>
+			</div>
+			<br/>
+		</div>
+	</h:body>
+</html>
