@@ -59,6 +59,28 @@
 				Sie können Dateien über das Webmin-Portal (Port 10000), über FTP (z.B. über FileZilla) oder über SCP hochladen.
 				
 				<br/><br/>
+				
+				<p:dataTable id="static-table" value="#{staticBean.files}" var="r" emptyMessage="Keine Dateien gefunden">
+					<p:column headerText="Datei" style="text-align:center">
+						#{r.path}
+					</p:column>
+					<p:column headerText="Darstellung" style="text-align:center">
+						<h:form>
+							<p:commandButton value="#{r.modeString}" action="#{staticBean.changeMode(r)}" update="@form message" />
+						</h:form>
+					</p:column>
+					<p:column headerText="Aktionen" style="text-align:center; width: 130px">
+						<h:form>
+							<p:commandButton id="btnDelete" action="#{staticBean.delete(r)}" update="static-table message" icon="fa fa-trash">
+								<p:confirm header="Bestätigung" message="'#{r.path}' wird entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden. Fortfahren?" icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:tooltip for="btnDelete" value="Löschen" position="top"/>
+							
+							<p:button href="#{staticBean.mainURL}/s/#{r.path}" id="btnLink" target="_blank" icon="fa fa-external-link" style="margin-left: 10px"/>
+							<p:tooltip for="btnLink" value="Seite im neuen Tab öffnen" position="top"/>
+						</h:form>
+					</p:column>
+				</p:dataTable>
 	 			
 			</p:panel>
 			<br/>
