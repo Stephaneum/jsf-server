@@ -3,7 +3,9 @@ package servlet;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,11 +37,12 @@ public class StaticServlet extends HttpServlet {
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(path+"/"+STATIC_FOLDER_NAME+file));
 			
 			// Content
-			byte[] bytes = new byte[in.available()];
-			in.read(bytes);
-			in.close();
+			byte[] bytes = getBytesFromStream(in);
 			
 			// Schreibe content in response.
+			
+			InputStream input = new URL("http://localhost:8080/Stephaneum/home.xhtml").openStream();
+			bytes = getBytesFromStream(input);
 			
 			//MIME-type
 			String endung = file.substring(file.lastIndexOf('.')+1, file.length()).toLowerCase();
@@ -80,6 +83,13 @@ public class StaticServlet extends HttpServlet {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
+	}
+	
+	private static byte[] getBytesFromStream(InputStream in) throws IOException {
+		byte[] bytes = new byte[in.available()];
+		in.read(bytes);
+		in.close();
+		return bytes;
 	}
 
 }

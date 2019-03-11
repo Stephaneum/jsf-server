@@ -36,6 +36,8 @@ import objects.ProgressObject;
 import objects.Projekt;
 import objects.Rubrik;
 import objects.Slide;
+import objects.StaticFile;
+import servlet.StaticServlet;
 import sitzung.Count;
 import sitzung.Sitzung;
 import sitzung.UserAgentDetection;
@@ -57,6 +59,7 @@ public class Datenbank {
 	static private boolean historyLink = false, euSaLink = false; //ist history/euSa ein Link?, sync durch erstes get; setter ändern es
 	static private ArrayList<Country> koopList;
 	static private boolean showSoftware = true, showSysteme = true, showCloud = true, redirectPort = false; //wird nach connect() synchronisiert
+	static private ArrayList<StaticFile> staticFiles;
 	
 	static private boolean showDummy = false; //nach jedem Server-Start deaktiviert, über Konfig (Admin) aktivierbar
 	
@@ -395,6 +398,7 @@ public class Datenbank {
 			setDefaultGruppeID(mysql.getFirstGruppeID());
 		}
 		Statistiken.initData();
+		updateStaticFiles();
 	}
 	
 	static public void updateDatabase() {
@@ -2665,5 +2669,87 @@ public class Datenbank {
 			Konsole.noConnection();
 		} else
 			mysql.deleteSlide(index);
+	}
+	
+	//--------------- Static Files ---------------------------------------------------
+	
+	public static ArrayList<StaticFile> getStaticFiles() {
+		return staticFiles;
+	}
+	
+	public static void updateStaticFiles() {
+		
+		String staticPath = speicherort+"/"+StaticServlet.STATIC_FOLDER_NAME;
+		int staticPathLength = staticPath.length()+1; // include last slash
+		ArrayList<File> files = new ArrayList<>();
+		listf(staticPath, files); //read files
+		ArrayList<String> filenames = new ArrayList<>();
+		
+		for(File file : files) {
+			if(file.getAbsolutePath().endsWith("html") || file.getAbsolutePath().endsWith("htm"))
+				filenames.add(file.getAbsolutePath().substring(staticPathLength).replace("\\", "/"));
+		}
+		
+		staticFiles = mysql.getStaticFiles(); // e.g. "folder/site.html"
+		ArrayList<String> database = new ArrayList<>();
+		
+		// check if does not exist anymore
+		for(StaticFile file : staticFiles) {
+			if(!filenames.contains(file.getPath())) {
+				//remove, file does not exist anymore
+				mysql.deleteStaticFile(file.getPath());
+				System.out.println("static:     [DELETE] "+file.getPath()+" does not exist anymore");
+			} else {
+				database.add(file.getPath());
+			}
+		}
+		
+		// check for new files
+		for(String name : filenames) {
+			if(!database.contains(name)) {
+				addStaticFile(name, StaticFile.MODE_MIDDLE);
+				System.out.println("static:     [ADD] "+name);
+			}
+		}
+		
+		staticFiles = mysql.getStaticFiles();
+	}
+	
+	public static void listf(String directoryName, ArrayList<File> files) {
+		
+		File directory = new File(directoryName);
+		
+		// Get all files from a directory.
+		File[] fList = directory.listFiles();
+		if(fList != null) {
+			for (File file : fList) {
+				if (file.isFile()) {
+					files.add(file);
+				} else if (file.isDirectory()) {
+					listf(file.getAbsolutePath(), files);
+				}
+			}
+		}
+	}
+	
+	public static void addStaticFile(String path, int mode) {
+		if(mysql == null) {
+			Konsole.noConnection();
+		} else
+			mysql.addStaticFile(path, mode);
+	}
+	
+	public static void editStaticFile(String path, int mode) {
+		if(mysql == null) {
+			Konsole.noConnection();
+		} else
+			mysql.editStaticFile(path, mode);
+	}
+	
+	public static void deleteStaticFile(String path) {
+		if(mysql == null) {
+			Konsole.noConnection();
+		} else
+			mysql.deleteStaticFile(path);
 	}
 }

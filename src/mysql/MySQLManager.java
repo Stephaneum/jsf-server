@@ -36,6 +36,7 @@ import objects.ProgressObject;
 import objects.Projekt;
 import objects.Rubrik;
 import objects.Slide;
+import objects.StaticFile;
 import sitzung.Count;
 import sitzung.ViewCounter;
 import tools.Timeformats;
@@ -80,7 +81,7 @@ public class MySQLManager {
 	final static String KONFIG_TERMINE = "str_termine";
 	final static String KONFIG_KOOP = "str_koop";
 	final static String KONFIG_KOOP_URL = "str_koop_url";
-	final static int VALUE_VERSION = 34; //AKTUELLE VERSION
+	final static int VALUE_VERSION = 35; //AKTUELLE VERSION
 	final static int VALUE_TIMEOUT_PASSWORT_VERGESSEN = 60*60*1000; //1 Stunde in Millisekunden STANDARD
 	final static int VALUE_STORAGE_LEHRER = Datei.convertToBytes(200, Datei.SIZE_MB); //200 MB
 	final static int VALUE_STORAGE_SCHUELER = Datei.convertToBytes(100, Datei.SIZE_MB); //100 MB
@@ -120,7 +121,8 @@ public class MySQLManager {
 					STATS_CLOUD = 14,
 					STATS_TAGE = 15,
 					STATS_STUNDEN = 16,
-					SLIDER = 17;
+					SLIDER = 17,
+					STATIC_FILES = 18;
 	//SPALTEN-NAMEN
 	final static int ID = 0,//zugangscode
 					CODE = 1,
@@ -195,7 +197,9 @@ public class MySQLManager {
 					SLIDER_PATH = 1,
 					SLIDER_TITLE = 2,
 					SLIDER_SUB = 3,
-					SLIDER_DIRECTION = 4;
+					SLIDER_DIRECTION = 4,
+					STATIC_PATH = 0,
+					STATIC_MODE = 1;
 					
 	final static String[] TABLE = {
 			"zugangscode",
@@ -215,7 +219,8 @@ public class MySQLManager {
 			"stats_cloud",
 			"stats_tage",
 			"stats_stunden",
-			"slider"
+			"slider",
+			"static_files"
 	};
 	final static String[][][] DB = {
 			{//zugangscode
@@ -384,7 +389,10 @@ public class MySQLManager {
 				{"title","VARCHAR(256)"},
 				{"sub","VARCHAR(256)"},
 				{"direction","VARCHAR(64)"}
-			}
+			},{ //static files
+				{"path","VARCHAR(1024)"},
+				{"mode","TINYINT"}
+			},
 		};
 	private Connection conn = null;
 	private boolean existDatabase = false, needUpdate = false;
@@ -5501,6 +5509,61 @@ public class MySQLManager {
 			}
 			
 		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//--------------- Static Files ---------------------------------------------------
+	
+	public ArrayList<StaticFile> getStaticFiles() {
+		try {
+			ResultSet rs = sendQuery("SELECT * FROM "+TABLE[STATIC_FILES], true);
+			ArrayList<StaticFile> list = new ArrayList<>(6);
+			while(rs.next()) {
+				StaticFile file = new StaticFile(rs.getString(1), rs.getInt(2));
+				list.add(file);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public void addStaticFile(String path, int mode) {
+		try {
+			
+			Object[] input = {path, mode};
+			int[] type = {TYPE_STRING, TYPE_INT};
+			
+			sendQueryPrepared("INSERT INTO "+TABLE[STATIC_FILES]+"("+DB[STATIC_FILES][STATIC_PATH][0]+","+
+															DB[STATIC_FILES][STATIC_MODE][0]+") VALUES(?,?)", input, type, false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void editStaticFile(String path, int mode) {
+		try {
+			
+			Object[] input = {mode, path};
+			int[] type = {TYPE_INT, TYPE_STRING};
+			
+			sendQueryPrepared("UPDATE "+TABLE[STATIC_FILES]+" SET "+ DB[STATIC_FILES][STATIC_MODE][0]+" = ? WHERE "+DB[STATIC_FILES][STATIC_PATH][0]+" = ?", input, type, false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteStaticFile(String path) {
+		try {
+			
+			Object[] input = {path};
+			int[] type = {TYPE_STRING};
+			
+			sendQueryPrepared("DELETE FROM "+TABLE[STATIC_FILES]+" WHERE "+DB[STATIC_FILES][STATIC_PATH][0]+"=?", input, type, false);
+			
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

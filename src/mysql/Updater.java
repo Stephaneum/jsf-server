@@ -422,6 +422,12 @@ public class Updater extends MySQLManager {
 			sendQuery("CREATE TABLE slider (idx INT,path VARCHAR(1024),title VARCHAR(256),sub VARCHAR(256),direction VARCHAR(64))ENGINE=INNODB",false);
 			
 			setKonfig(KONFIG_VERSION, String.valueOf(34));
+		case 34:
+			Konsole.update("34 auf 35");
+			
+			sendQuery("CREATE TABLE static_files (path VARCHAR(1024),mode TINYINT)ENGINE=INNODB", false);
+			
+			setKonfig(KONFIG_VERSION, String.valueOf(35));
 		}
 	}
 	
