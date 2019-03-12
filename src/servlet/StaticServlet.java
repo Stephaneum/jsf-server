@@ -56,6 +56,7 @@ public class StaticServlet extends HttpServlet {
 				String fileWithoutPath = file.substring(file.lastIndexOf("/")+1);
 				response.setHeader("Content-Disposition","inline; filename=\""+fileWithoutPath+"\""); //Namen der Datei
 			}
+			response.addHeader("Content-Length", String.valueOf(bytes.length));
 			response.getOutputStream().write(bytes);
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

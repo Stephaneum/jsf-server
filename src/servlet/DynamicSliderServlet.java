@@ -40,7 +40,8 @@ public class DynamicSliderServlet extends HttpServlet {
 			in.read(bytes);
 			in.close();
 			
-			response.addHeader("Cache-Control", "max-age="+EXPIRATION);
+			response.setHeader("Cache-Control", "max-age="+EXPIRATION);
+			response.setHeader("Content-Length", String.valueOf(bytes.length));
 			
 			// Schreibe Content in response
 			response.getOutputStream().write(bytes);

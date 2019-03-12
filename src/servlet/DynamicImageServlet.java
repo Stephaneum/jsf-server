@@ -58,7 +58,7 @@ public class DynamicImageServlet extends HttpServlet {
 			long lastModified = (fileObject.lastModified() / 1000 ) * 1000; //last-modified speichert keine Millisekunden
 			long lastModifiedBrowser = request.getDateHeader("If-Modified-Since");
 			if(lastModified <= lastModifiedBrowser) {
-				response.addDateHeader("Last-Modified", lastModified);
+				response.setDateHeader("Last-Modified", lastModified);
 				response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 				return;
 			}
@@ -70,7 +70,8 @@ public class DynamicImageServlet extends HttpServlet {
 			in.read(bytes);
 			in.close();
 			
-			response.addDateHeader("Last-Modified", lastModified);
+			response.setDateHeader("Last-Modified", lastModified);
+			response.setHeader("Content-Length", String.valueOf(bytes.length));
 			
 			// Schreibe Content in response
 			response.getOutputStream().write(bytes);

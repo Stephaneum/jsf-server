@@ -100,6 +100,7 @@ public class DynamicFileServlet extends HttpServlet {
 				Konsole.info("public: "+file+" mime:"+mime);
 			}
 			response.setHeader("Content-Disposition","inline; filename=\""+id_string[1]+"\""); //Namen der Datei
+			response.setHeader("Content-Length", String.valueOf(bytes.length));
 			response.getOutputStream().write(bytes);
 		} catch(FileNotFoundException e) {
 			
