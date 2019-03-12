@@ -2677,6 +2677,18 @@ public class Datenbank {
 		return staticFiles;
 	}
 	
+	public static StaticFile getStaticFile(String path) {
+		if(staticFiles == null)
+			return null;
+		
+		for(StaticFile file : staticFiles) {
+			if(file.getPath().equals(path))
+				return file;
+		}
+		
+		return null;
+	}
+	
 	public static void updateStaticFiles() {
 		
 		String staticPath = speicherort+"/"+StaticServlet.STATIC_FOLDER_NAME;
@@ -2715,7 +2727,7 @@ public class Datenbank {
 		staticFiles = mysql.getStaticFiles();
 	}
 	
-	public static void listf(String directoryName, ArrayList<File> files) {
+	private static void listf(String directoryName, ArrayList<File> files) {
 		
 		File directory = new File(directoryName);
 		

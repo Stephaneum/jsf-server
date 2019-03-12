@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="theme-color" content="#{themeService.navbarColor}" />
+	<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+	<h:outputStylesheet library="css" name="materialize.min.css" />
+	<h:outputStylesheet library="css" name="#{konfig.cssMaterial}" />
+	<h:outputScript library="js" name="materialize.min.js" />
+	$replaceHead
+</h:head>
+
+<h:body style="background-color:#{themeService.backgroundPublicColor};">
+	<p:growl id="message" showDetail="true">
+		<p:autoUpdate />
+	</p:growl>
+
+	<ui:insert>
+		<ui:include src="component_nav.xhtml" />
+	</ui:insert>
+
+	<br />
+
+	<div id="main-row" class="row" style="min-height: 100vh">
+	
+		$replaceBody
+
+	</div>
+
+	<ui:insert>
+		<ui:include src="component_footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

@@ -141,7 +141,7 @@
 						<i class="material-icons">menu</i>
 					</h:panelGroup>
 				</a>
-				<a href="home.xhtml"
+				<a href="#{request.contextPath}/home.xhtml"
 				class="brand-logo"><h:graphicImage id="logo-steph"
 					value="/resources/img/#{themeService.logo}"
 					style="height:50px;margin-top:5px;margin-left:10px" /></a>
@@ -218,7 +218,7 @@
 							<ui:repeat value="#{g.unterGruppe}" var="g2">
 								<h:panelGroup layout="block" rendered="#{not empty g2.unterGruppe}">
 									<a id="s-0-#{g2.gruppe_id}-parent" class="white-text"
-									href="home.xhtml?id=#{g2.gruppe_id}"
+									href="#{request.contextPath}/home.xhtml?id=#{g2.gruppe_id}"
 									onmouseover="showNextSection(0,#{g2.gruppe_id})" >
 									<span>#{g2.name}</span>
 									<i class="fa fa-arrow-right"></i>
@@ -227,7 +227,7 @@
 								</h:panelGroup>
 								<h:panelGroup layout="block" rendered="#{empty g2.unterGruppe and empty g2.link}">
 									<a id="s-0-#{g2.gruppe_id}-parent" class="white-text"
-									href="home.xhtml?id=#{g2.gruppe_id}"
+									href="#{request.contextPath}/home.xhtml?id=#{g2.gruppe_id}"
 									onmouseover="showNextSection(0,#{g2.gruppe_id})">
 									#{g2.name}
 									</a>
@@ -255,7 +255,7 @@
 										
 											<h:panelGroup layout="block" rendered="#{not empty g3.unterGruppe}">
 												<a id="s-1-#{g3.gruppe_id}-parent" class="white-text"
-												href="home.xhtml?id=#{g3.gruppe_id}"
+												href="#{request.contextPath}/home.xhtml?id=#{g3.gruppe_id}"
 												onmouseover="showNextSection(1,#{g3.gruppe_id})" >
 												<span>#{g3.name}</span>
 												<i class="fa fa-arrow-right"></i>
@@ -264,7 +264,7 @@
 											</h:panelGroup>
 											<h:panelGroup layout="block" rendered="#{empty g3.unterGruppe and empty g3.link}">
 												<a id="s-1-#{g3.gruppe_id}-parent" class="white-text"
-												href="home.xhtml?id=#{g3.gruppe_id}"
+												href="#{request.contextPath}/home.xhtml?id=#{g3.gruppe_id}"
 												onmouseover="showNextSection(1,#{g3.gruppe_id})" >
 												#{g3.name}
 												</a>
@@ -296,7 +296,7 @@
 											<ui:repeat value="#{g3.unterGruppe}" var="g4">
 												<h:panelGroup layout="block" rendered="#{empty g4.link}">
 													<a id="s-2-#{g4.gruppe_id}-parent" class="single-highlight"
-													href="home.xhtml?id=#{g4.gruppe_id}">
+													href="#{request.contextPath}/home.xhtml?id=#{g4.gruppe_id}">
 													#{g4.name}
 													</a>
 													<br/>
@@ -331,20 +331,20 @@
 						<h:panelGroup layout="block" styleClass="col m3" rendered="#{topMenu.admin}">
 							<br/>
 							<h5 class="white-text">Admin</h5>
-							<a href="admin_konfig.xhtml" class="single-highlight"><i class="fa fa-cog" aria-hidden="true"></i> Konfiguration</a><br/>
-							<a href="admin_static.xhtml" class="single-highlight"><i class="fa fa-file-text" aria-hidden="true"></i> Benutzerdefinierte Seiten</a><br/>
-							<a href="admin_rubriken.xhtml" class="single-highlight"><i class="fa fa-filter" aria-hidden="true"></i> Rubriken</a><br/>
-							<a href="admin_backup.xhtml" class="single-highlight"><i class="fa fa-medkit" aria-hidden="true"></i> Backup</a><br/>
-							<a href="admin_zugangscode.xhtml" class="single-highlight"><i class="fa fa-key" aria-hidden="true"></i> Zugangscodes</a><br/>
-							<a href="admin_nutzer.xhtml" class="single-highlight"><i class="fa fa-users" aria-hidden="true"></i> Nutzer</a><br/>
-							<a href="admin_logs.xhtml" class="single-highlight"><i class="fa fa-book" aria-hidden="true"></i> Logbuch</a><br/>
+							<a href="#{request.contextPath}/admin_konfig.xhtml" class="single-highlight"><i class="fa fa-cog" aria-hidden="true"></i> Konfiguration</a><br/>
+							<a href="#{request.contextPath}/admin_static.xhtml" class="single-highlight"><i class="fa fa-file-text" aria-hidden="true"></i> Benutzerdefinierte Seiten</a><br/>
+							<a href="#{request.contextPath}/admin_rubriken.xhtml" class="single-highlight"><i class="fa fa-filter" aria-hidden="true"></i> Rubriken</a><br/>
+							<a href="#{request.contextPath}/admin_backup.xhtml" class="single-highlight"><i class="fa fa-medkit" aria-hidden="true"></i> Backup</a><br/>
+							<a href="#{request.contextPath}/admin_zugangscode.xhtml" class="single-highlight"><i class="fa fa-key" aria-hidden="true"></i> Zugangscodes</a><br/>
+							<a href="#{request.contextPath}/admin_nutzer.xhtml" class="single-highlight"><i class="fa fa-users" aria-hidden="true"></i> Nutzer</a><br/>
+							<a href="#{request.contextPath}/admin_logs.xhtml" class="single-highlight"><i class="fa fa-book" aria-hidden="true"></i> Logbuch</a><br/>
 							<br/>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="col m3" rendered="#{!topMenu.admin and topMenu.vertretungsplan}">
 							<br/>
 							<h5 class="white-text">Konfiguration</h5>
-							<a href="konfig_vertretung.xhtml" class="single-highlight"><i class="fa fa-file-text" aria-hidden="true"></i> Vertretungsplan</a><br/>
+							<a href="#{request.contextPath}/konfig_vertretung.xhtml" class="single-highlight"><i class="fa fa-file-text" aria-hidden="true"></i> Vertretungsplan</a><br/>
 							<br/>
 						</h:panelGroup>
 						
@@ -352,19 +352,19 @@
 							<br/>
 							<h5 class="white-text">Nutzer</h5>
 							<h:panelGroup rendered="#{topMenu.rubrikErstellen}">
-								<a href="nutzer_rubrik.xhtml" class="single-highlight"><i class="fa fa-star" aria-hidden="true"></i> Rubrik</a><br/>
+								<a href="#{request.contextPath}/nutzer_rubrik.xhtml" class="single-highlight"><i class="fa fa-star" aria-hidden="true"></i> Rubrik</a><br/>
 							</h:panelGroup>
-							<a href="nutzer_beitrag.xhtml" class="single-highlight"><i class="fa fa-pencil-square" aria-hidden="true"></i> Beiträge</a><br/>
-							<a href="nutzer_dateien.xhtml" class="single-highlight"><i class="fa fa-folder-open" aria-hidden="true"></i> Dateien</a><br/>
-							<a href="nutzer_account.xhtml" class="single-highlight"><i class="fa fa-address-card" aria-hidden="true"></i> Account</a><br/>
+							<a href="#{request.contextPath}/nutzer_beitrag.xhtml" class="single-highlight"><i class="fa fa-pencil-square" aria-hidden="true"></i> Beiträge</a><br/>
+							<a href="#{request.contextPath}/nutzer_dateien.xhtml" class="single-highlight"><i class="fa fa-folder-open" aria-hidden="true"></i> Dateien</a><br/>
+							<a href="#{request.contextPath}/nutzer_account.xhtml" class="single-highlight"><i class="fa fa-address-card" aria-hidden="true"></i> Account</a><br/>
 							<br/>
 						</div>
 						
 						<div class="col m3">
 							<br/>
 							<h5 class="white-text">Gruppen</h5>
-							<a href="klasse.xhtml" class="single-highlight"><i class="fa fa-users" aria-hidden="true"></i> Klassen</a><br/>
-							<a href="projekt_all.xhtml" class="single-highlight"><i class="fa fa-comments" aria-hidden="true"></i> Projekte</a><br/>
+							<a href="#{request.contextPath}/klasse.xhtml" class="single-highlight"><i class="fa fa-users" aria-hidden="true"></i> Klassen</a><br/>
+							<a href="#{request.contextPath}/projekt_all.xhtml" class="single-highlight"><i class="fa fa-comments" aria-hidden="true"></i> Projekte</a><br/>
 							<br/>
 						</div>
 						
@@ -375,25 +375,25 @@
 
 		<ul class="sidenav" id="side-nav">
 			<br />
-			<li><a href="home.xhtml"><i class="material-icons">home</i>Startseite</a></li>
+			<li><a href="#{request.contextPath}/home.xhtml"><i class="material-icons">home</i>Startseite</a></li>
 			<h:panelGroup rendered="#{!konfig.loggedIn}">
-				<li><a href="login.xhtml"><i class="material-icons">exit_to_app</i>Login</a></li>
+				<li><a href="#{request.contextPath}/login.xhtml"><i class="material-icons">exit_to_app</i>Login</a></li>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{konfig.loggedIn}">
-				<li><a href="logout.xhtml"><i class="material-icons">exit_to_app</i>Abmelden</a></li>
+				<li><a href="#{request.contextPath}/logout.xhtml"><i class="material-icons">exit_to_app</i>Abmelden</a></li>
 			</h:panelGroup>
-			<li><a href="termine.xhtml"><i class="material-icons">date_range</i>Termine</a></li>
+			<li><a href="#{request.contextPath}/termine.xhtml"><i class="material-icons">date_range</i>Termine</a></li>
 			
 			<h:panelGroup rendered="#{konfig.vertretungVisible}">
 				<li><div class="divider"></div></li>
 				<li><a class="subheader">Vertretungsplan</a></li>
-				<li><a href="vertretungsplan.pdf"><i class="material-icons">description</i>#{konfig.vertretungInfo}</a></li>
+				<li><a href="#{request.contextPath}/vertretungsplan.pdf"><i class="material-icons">description</i>#{konfig.vertretungInfo}</a></li>
 			</h:panelGroup>
 			
 			<li><div class="divider"></div></li>
 			<li><a class="subheader">weitere Links</a></li>
 			<ui:repeat value="#{topMenu.topLevel}" var="t">
-				<li><a href="home.xhtml?id=#{t.gruppe_id}">#{t.name}</a></li>
+				<li><a href="#{request.contextPath}/home.xhtml?id=#{t.gruppe_id}">#{t.name}</a></li>
 			</ui:repeat>
 		</ul>
 

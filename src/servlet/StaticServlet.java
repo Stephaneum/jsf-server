@@ -1,25 +1,30 @@
 package servlet;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import mysql.Datenbank;
 import objects.Datei;
+import objects.StaticFile;
+import tools.URLManager;
 
 public class StaticServlet extends HttpServlet {
-	
-	/*
-	 * öffentliche Dateien (wie DynamicImageServlet)
-	 * 
-	 */
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -31,33 +36,65 @@ public class StaticServlet extends HttpServlet {
 			
 			request.setCharacterEncoding("UTF-8");
 			
-			String file = request.getPathInfo();
+			String filepath = request.getPathInfo().substring(1);
 			String path = Datenbank.getSpeicherort();
 			
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(path+"/"+STATIC_FOLDER_NAME+file));
-			
-			// Content
-			byte[] bytes = getBytesFromStream(in);
-			
-			// Schreibe content in response.
-			
-			InputStream input = new URL("http://localhost:8080/Stephaneum/home.xhtml").openStream();
-			bytes = getBytesFromStream(input);
+			StaticFile file = Datenbank.getStaticFile(filepath);
+			if(file == null)
+				file = new StaticFile(filepath, StaticFile.MODE_MIDDLE);
 			
 			//MIME-type
-			String endung = file.substring(file.lastIndexOf('.')+1, file.length()).toLowerCase();
+			String endung = filepath.substring(filepath.lastIndexOf('.')+1, filepath.length()).toLowerCase();
 			String mime = Datei.toMime(endung);
 			
-			if(mime != null) {
+			BufferedInputStream fileInput = new BufferedInputStream(new FileInputStream(path+"/"+STATIC_FOLDER_NAME+"/"+filepath));
+			byte[] bytes = null;
+			
+			if(mime != null && mime.equals("text/html")) {
+				// HTML file
+				response.setContentType(mime+";charset=UTF-8");
+				switch(file.getMode()) {
+				case StaticFile.MODE_MIDDLE:
+				case StaticFile.MODE_FULL_WIDTH:
+					String cookie = request.getHeader("Cookie");
+					String url = file.getMode() == StaticFile.MODE_MIDDLE ? URLManager.getMainURL(request)+"/static_container_middle.xhtml" : URLManager.getMainURL(request)+"/static_container_full.xhtml";
+					HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+					conn.addRequestProperty("Cookie", cookie);
+					
+		            String template = getStringFromStream(conn.getInputStream());
+		            String content = getStringFromStream(fileInput);
+		            Document doc = Jsoup.parse(content);
+		            String head = doc.select("head").first().html();
+		            String body = doc.select("body").first().html();
+		            String title;
+		            
+		            // get title
+		            Element element = doc.select("title").first();
+		            if(element != null)
+		            	title = element.html();
+		            else
+		            	title = "Beitrag";
+		            
+		            template = template.replace("$replaceBody", body);
+		            template = template.replace("$replaceHead", head);
+		            template = template.replace("$replaceTitle", title);
+		            
+		            bytes = template.getBytes(Charset.forName("UTF-8"));
+					break;
+				case StaticFile.MODE_FULL_SCREEN:
+					bytes = getBytesFromStream(fileInput);
+					break;
+				}
+			} else {
+				// other files
+				bytes = getBytesFromStream(fileInput);
 				response.setContentType(mime);
 			}
 			
-			if(mime != null && !mime.equals("text/html")) {
-				String fileWithoutPath = file.substring(file.lastIndexOf("/")+1);
-				response.setHeader("Content-Disposition","inline; filename=\""+fileWithoutPath+"\""); //Namen der Datei
-			}
+			response.addHeader("Cache-Control", "private");
 			response.addHeader("Content-Length", String.valueOf(bytes.length));
 			response.getOutputStream().write(bytes);
+			response.flushBuffer();
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			falseURL500(response);
@@ -91,6 +128,20 @@ public class StaticServlet extends HttpServlet {
 		in.read(bytes);
 		in.close();
 		return bytes;
+	}
+	
+	private static String getStringFromStream(InputStream in) throws IOException {
+		BufferedReader br = new BufferedReader(
+                new InputStreamReader(in));
+
+		StringBuilder builder = new StringBuilder();
+		String inputLine;
+		while ((inputLine = br.readLine()) != null) {
+			builder.append(inputLine);
+			builder.append("\n");
+		}
+		br.close();
+		return builder.toString();
 	}
 
 }
