@@ -2692,6 +2692,8 @@ public class Datenbank {
 	public static void updateStaticFiles() {
 		
 		String staticPath = speicherort+"/"+StaticServlet.STATIC_FOLDER_NAME;
+		new File(staticPath).mkdirs(); // create missing folders
+		
 		int staticPathLength = staticPath.length()+1; // include last slash
 		ArrayList<File> files = new ArrayList<>();
 		listf(staticPath, files); //read files
