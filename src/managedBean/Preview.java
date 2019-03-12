@@ -13,7 +13,7 @@ import javax.faces.bean.ViewScoped;
 
 import objects.Datei;
 import objects.Nutzer;
-import servlet.DynamicPreviewServlet;
+import servlet.PreviewServlet;
 import sitzung.Sitzung;
 import tools.URLManager;
 
@@ -64,13 +64,13 @@ public class Preview {
 
 	// Spezialfall: Office, timeLimited
 	public void accept() {
-		DynamicPreviewServlet.addDatei(datei);
+		PreviewServlet.addDatei(datei);
 		accepted = true;
 	}
 
 	public String getPreviewAddress() {
 		return URLManager.convertUTF8(URLManager.getMainURL(null), URLManager.CONVERT_TO_URL) + "%2Fpreview%2F%3Fkey%3D"
-				+ DynamicPreviewServlet.KEY + "%26file%3D" + datei.getDatei_id();
+				+ PreviewServlet.KEY + "%26file%3D" + datei.getDatei_id();
 	}
 
 	public boolean isAccepted() {

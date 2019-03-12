@@ -18,23 +18,23 @@
 	</servlet>
 	
 	<servlet>
-		<servlet-name>DynamicImageServlet</servlet-name>
-		<servlet-class>servlet.DynamicImageServlet</servlet-class>
+		<servlet-name>ImageServlet</servlet-name>
+		<servlet-class>servlet.ImageServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
-		<servlet-name>DynamicFileServlet</servlet-name>
-		<servlet-class>servlet.DynamicFileServlet</servlet-class>
+		<servlet-name>PublicFileServlet</servlet-name>
+		<servlet-class>servlet.PublicFileServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
-		<servlet-name>DynamicPreviewServlet</servlet-name>
-		<servlet-class>servlet.DynamicPreviewServlet</servlet-class>
+		<servlet-name>PreviewServlet</servlet-name>
+		<servlet-class>servlet.PreviewServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
-		<servlet-name>DynamicSliderServlet</servlet-name>
-		<servlet-class>servlet.DynamicSliderServlet</servlet-class>
+		<servlet-name>SliderServlet</servlet-name>
+		<servlet-class>servlet.SliderServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
@@ -63,22 +63,22 @@
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>DynamicImageServlet</servlet-name>
+		<servlet-name>ImageServlet</servlet-name>
 		<url-pattern>/images/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>DynamicFileServlet</servlet-name>
+		<servlet-name>PublicFileServlet</servlet-name>
 		<url-pattern>/public/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>DynamicPreviewServlet</servlet-name>
+		<servlet-name>PreviewServlet</servlet-name>
 		<url-pattern>/preview/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>DynamicSliderServlet</servlet-name>
+		<servlet-name>SliderServlet</servlet-name>
 		<url-pattern>/slider/*</url-pattern>
 	</servlet-mapping>
 	

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mysql.Datenbank;
 
-public class DynamicSliderServlet extends HttpServlet {
+public class SliderServlet extends HttpServlet {
 	
 	/*
 	 * damit die Grafiken auf der Homepage angezeigt werden können

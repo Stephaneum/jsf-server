@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import mysql.Datenbank;
 import objects.Datei;
 
-public class DynamicImageServlet extends HttpServlet {
+public class ImageServlet extends HttpServlet {
 	
 	/*
 	 * damit die Grafiken auf der Homepage angezeigt werden können
