@@ -39,10 +39,6 @@ public class StaticServlet extends HttpServlet {
 			String filepath = request.getPathInfo().substring(1);
 			String path = Datenbank.getSpeicherort();
 			
-			StaticFile file = Datenbank.getStaticFile(filepath);
-			if(file == null)
-				file = new StaticFile(filepath, StaticFile.MODE_MIDDLE);
-			
 			//MIME-type
 			String endung = filepath.substring(filepath.lastIndexOf('.')+1, filepath.length()).toLowerCase();
 			String mime = Datei.toMime(endung);
@@ -52,6 +48,11 @@ public class StaticServlet extends HttpServlet {
 			
 			if(mime != null && mime.equals("text/html")) {
 				// HTML file
+				
+				StaticFile file = Datenbank.getStaticFile(filepath);
+				if(file == null)
+					file = new StaticFile(filepath, StaticFile.MODE_MIDDLE);
+				
 				response.setContentType(mime+";charset=UTF-8");
 				switch(file.getMode()) {
 				case StaticFile.MODE_MIDDLE:

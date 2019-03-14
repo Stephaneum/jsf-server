@@ -22,6 +22,7 @@
 	<h:outputScript library="js" name="moment.min.js" />
 	<h:outputScript library="js" name="countUp.min.js" />
 	<h:outputScript library="js" name="leaflet.min.js" />
+	<h:outputScript library="js" name="jquery.marquee.min.js" />
 	<h:outputScript library="js" name="terminePreview.js" />
 	<style>
 		@media only screen and (max-width: 1100px) {
@@ -103,22 +104,7 @@
 		}
 		
 		.marquee {
-			color: black;
-		    white-space: nowrap;
-		    overflow: hidden;
-		    box-sizing: border-box;
-		}
-		.marquee p {
-		    display: inline-block;
-		    padding-left: 100%;
-		    animation: marquee 15s linear infinite;
-		}
-		.marquee p:hover {
-    		animation-play-state: paused
-		}
-		@keyframes marquee {
-		    0%   { transform: translate(0, 0); }
-		    100% { transform: translate(-100%, 0); }
+		  overflow: hidden;
 		}
 		
 	</style>
@@ -159,6 +145,16 @@
 			map.setView(position1, 17);
 			map.scrollWheelZoom.disable();
 			marker1.openPopup();
+			
+			const $mq = $('.marquee');
+			const text = '&nbsp;&nbsp;&nbsp;&nbsp;' + $mq.text();
+			$mq.append(text).append(text).append(text).append(text)
+			
+			$('.marquee').marquee({
+				direction: 'left',
+				duplicated: true,
+				duration: 10000
+			});
 		});
 		
 		function changeMapHaus(haus) {
@@ -411,11 +407,11 @@
 				<div class="card" style="background-color: #dcedc8">
 					<div class="card-content" style="color: #{themeService.beitragTextColor}">
 						<div style="display: table; width: 100%; table-layout: fixed;">
-							<div style="display: table-cell; width: 80px" class="hide-on-small-only">
+							<div style="display: table-cell; width: 80px; vertical-align: top" class="hide-on-small-only">
 								<b>Liveticker:</b>
 							</div>
 							<div style="display: table-cell;" class="marquee">
-								<p>#{konfig.liveTicker}</p>
+								#{konfig.liveTicker}
 							</div>
 						</div>
 					</div>

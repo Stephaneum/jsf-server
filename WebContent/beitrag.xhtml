@@ -23,6 +23,12 @@
 	    $('.materialboxed').materialbox();
 	  });
 	</script>
+	<style>
+		#img-wall .material-placeholder {
+			display: inline-block !important;
+			width: 33%;
+		}
+	</style>
 </h:head>
 
 <h:body style="background-color:#{themeService.backgroundPublicColor};">
@@ -135,12 +141,10 @@
 									<h:outputText value="#{beitragOpen.openBeitrag.nutzerString}" rendered="#{beitragOpen.openBeitrag.showAutor}"/>
 									<br/><br/>
 									<div class="row">
-									<div style="text-align:center">
+									<div id="img-wall" style="text-align:center">
 										<ui:repeat var="p" value="#{beitragOpen.openBeitrag.bilder}">
-											<div class="col m4" style="">
-												<img class="materialboxed" data-caption="#{p.datei_name_ohne_endung}" width="100%" src="images/?id=#{p.datei_name_mit_id}"/>
-												<br/><br/><br/>
-											</div>
+											<img class="materialboxed" style="width: 100%;padding: 10px"
+												data-caption="#{p.datei_name_ohne_endung}" src="images/?id=#{p.datei_name_mit_id}"/>
 										</ui:repeat>
 									</div>
 									</div>
