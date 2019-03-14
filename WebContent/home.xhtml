@@ -103,10 +103,6 @@
 			background-color: #81c784;
 		}
 		
-		.marquee {
-		  overflow: hidden;
-		}
-		
 	</style>
 	<script>
 		//<![CDATA[
@@ -118,6 +114,8 @@
 		var marker2;
 		var position1 = [51.7521158, 11.458252];
 		var position2 = [51.750893, 11.455805];
+		
+		var mqCounter = 0;
 		
 		$(document).ready(function() {
 			$('.slider').slider();
@@ -146,16 +144,52 @@
 			map.scrollWheelZoom.disable();
 			marker1.openPopup();
 			
-			const $mq = $('.marquee');
-			const text = '&nbsp;&nbsp;&nbsp;&nbsp;' + $mq.text();
-			$mq.append(text).append(text).append(text).append(text)
+			//marquee
 			
-			$('.marquee').marquee({
+			if(#{empty konfig.liveTicker or not beitragList.publicHome})
+				return;
+			
+			var mq = document.getElementById('marquee');
+			var mqTest = document.getElementById('marquee-test');
+			var mqText = '&nbsp;&nbsp;&nbsp;&nbsp;' + mq.innerHTML;
+			
+			if(mqTest.offsetWidth < 1000) {
+				increaseMarqueeText(mq, mqText, mqTest);
+			} else {
+				startMarquee(mq, mqText, mqTest);
+			}
+		});
+		
+		function increaseMarqueeText(mq, mqText, mqTest) {
+			
+			if(mqCounter >= 30)
+				return;
+			
+			mqCounter++;
+			
+			mqTest.innerHTML += mqText;
+			setTimeout(function() {
+				if(mqTest.offsetWidth < 1000)
+					increaseMarqueeText(mq, mqText, mqTest);
+				else
+					startMarquee(mq, mqText, mqTest);
+			}, 0);
+		}
+		
+		function startMarquee(mq, mqText, mqTest) {
+			
+			for(var i = 0; i < mqCounter; i++)
+				mq.innerHTML += mqText;
+
+			mqTest.style.display = 'none';
+			mq.style.visibility = 'visible';
+			$('#marquee').marquee({
 				direction: 'left',
 				duplicated: true,
 				duration: 10000
 			});
-		});
+			
+		}
 		
 		function changeMapHaus(haus) {
 			if(haus == 1) {
@@ -410,7 +444,7 @@
 							<div style="display: table-cell; width: 80px; vertical-align: top" class="hide-on-small-only">
 								<b>Liveticker:</b>
 							</div>
-							<div style="display: table-cell;" class="marquee">
+							<div id="marquee" style="display: table-cell; visibility: hidden; overflow: hidden;">
 								#{konfig.liveTicker}
 							</div>
 						</div>
@@ -691,6 +725,7 @@
 		</div>
 	</h:panelGroup>
 	
+	<div style="display: inline-block; visibility: hidden; white-space: nowrap;" id="marquee-test">#{konfig.liveTicker}</div>
 	<ui:insert>
   		<ui:include src="component_footer.xhtml" />
 	</ui:insert>
