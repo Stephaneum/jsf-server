@@ -50,8 +50,11 @@ public class StaticServlet extends HttpServlet {
 				// HTML file
 				
 				StaticFile file = Datenbank.getStaticFile(filepath);
-				if(file == null)
+				if(file == null) {
+					// file not in database yet (will be added when admin access static konfig page)
+					// default: MODE_MIDDLE
 					file = new StaticFile(filepath, StaticFile.MODE_MIDDLE);
+				}
 				
 				response.setContentType(mime+";charset=UTF-8");
 				switch(file.getMode()) {
