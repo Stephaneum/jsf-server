@@ -65,6 +65,13 @@ public class StaticServlet extends HttpServlet {
 					HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 					conn.addRequestProperty("Cookie", cookie);
 					
+					// bugfix: under reverse proxy, there is maybe a 301/302 response
+					String newLocation = conn.getHeaderField("Location");
+					if(newLocation != null) {
+						conn.disconnect();
+						conn = (HttpURLConnection) new URL(newLocation).openConnection();
+						conn.addRequestProperty("Cookie", cookie);
+					}
 		            String template = getStringFromStream(conn.getInputStream());
 		            String content = getStringFromStream(fileInput);
 		            Document doc = Jsoup.parse(content);
@@ -84,6 +91,7 @@ public class StaticServlet extends HttpServlet {
 		            template = template.replace("$replaceTitle", title);
 		            
 		            bytes = template.getBytes(Charset.forName("UTF-8"));
+		            conn.disconnect();
 					break;
 				case StaticFile.MODE_FULL_SCREEN:
 					bytes = getBytesFromStream(fileInput);
