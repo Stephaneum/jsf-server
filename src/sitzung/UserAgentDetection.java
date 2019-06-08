@@ -27,7 +27,7 @@ public class UserAgentDetection {
 			return INTERNET_EXPLORER;
 		}
 		
-		if(userAgent.contains("safari")) {
+		if(userAgent.contains("safari") || userAgent.contains("applewebkit")) {
 			return SAFARI;
 		}
 		
@@ -93,6 +93,7 @@ public class UserAgentDetection {
 				userAgent.contains("xovibot") ||
 				userAgent.contains("ahrefsbot") ||
 				userAgent.contains("semrushbot") ||
+				userAgent.contains("lyncautodiscover") ||
 				userAgent.contains("zoominfobot");
 	}
 
