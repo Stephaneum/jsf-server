@@ -15,9 +15,6 @@ public class URLManager {
 			PROJEKT = "projekt_all", PROJEKT_OPEN = "projekt_open",
 			LOG_SICHERUNG = "log_sicherung";
 	
-	//mobile
-	final static public String M_HOME = "pm:home", M_BEITRAG = "pm:beitrag";
-	
 	
 	/* URL des aktuellen Contexts
 	 * 
