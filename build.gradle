@@ -8,11 +8,8 @@ buildscript {
     }
 }
 
-plugins {
-    id 'java'
-    id 'war'
-}
-
+apply plugin: 'java'
+apply plugin: 'war'
 apply plugin: 'com.bmuschko.tomcat'
 
 group 'de.stephaneum'
@@ -40,9 +37,11 @@ dependencies {
     compile "org.jsoup:jsoup:1.10.3"
     compile "javax.activation:activation:1.1.1"
 
+    // primefaces
     compile "org.primefaces:primefaces:6.2"
     compile "org.primefaces.themes:all-themes:1.0.10"
 
+    // tomcat
     def tomcatVersion = '8.5.40'
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
             "org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.2",
