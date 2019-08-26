@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>#{beitragOpen.openBeitrag.titel}#{konfig.suffixTitle}</title>
+	<f:metadata>
+		<f:viewAction action="#{weiterleitung.index}" />
+	</f:metadata>
+	<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="theme-color" content="#{themeService.navbarColor}" />
+	<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+	<h:outputStylesheet library="css" name="material-icons.css" />
+	<h:outputStylesheet library="css" name="materialize.min.css" />
+	<h:outputStylesheet library="css" name="#{konfig.cssMaterial}" />
+	<h:outputScript library="js" name="materialize.min.js" />
+	<script>
+	 $(document).ready(function(){
+	    $('.materialboxed').materialbox();
+	  });
+	</script>
+	<style>
+		#img-wall .material-placeholder {
+			display: inline-block !important;
+			width: 33%;
+		}
+	</style>
+</h:head>
+
+<h:body style="background-color:#{themeService.backgroundPublicColor};">
+	<p:growl id="message" showDetail="true" />
+
+	<ui:insert>
+		<ui:include src="component_nav.xhtml" />
+	</ui:insert>
+
+	<br />
+
+	<div id="main-row" class="row" style="min-height: 100vh">
+
+		<div class="col l2 hide-on-med-and-down"></div>
+		<div class="col s12 l8">
+			<a href="home.xhtml" class="green-text" style="margin-left: 20px">Startseite</a>
+			<i class="fa fa-angle-right"></i> <a
+				href="home.xhtml?id=#{beitragOpen.openBeitrag.gruppe.gruppe_id}"
+				class="green-text">#{beitragOpen.openBeitrag.gruppe.name}</a> <i class="fa fa-angle-right"></i> <a
+				href="#" class="green-text">Beitrag</a>
+		</div>
+		
+		<div class="col l2 hide-on-med-and-down">
+			<br />
+		</div>
+
+		<div class="col l2 hide-on-med-and-down">
+			<br /> <br />
+			<ui:insert>
+				<ui:include src="component_quicklinks.xhtml" />
+			</ui:insert>
+		</div>
+
+		<div class="col s12 l8">
+
+			<h:form>
+				<div class="card-panel white" style="min-height: 850px">
+					<h5>#{beitragOpen.openBeitrag.titel}</h5>
+					<p>
+						#{beitragOpen.openBeitrag.datum} / <a
+							href="home.xhtml?id=#{beitragOpen.openBeitrag.gruppe.gruppe_id}"
+							class="green-text">#{beitragOpen.openBeitrag.gruppe.name}</a>
+					</p>
+					<br />
+					<h:panelGroup layout="block" style="text-align:center"
+						rendered="#{beitragOpen.openBeitrag.password and !beitragOpen.passwordOK}">
+						<br />
+						<br />
+						<br />
+						<br />
+
+						<p:password style="width:230px" value="#{beitragOpen.password}"
+							placeholder="Passwort" />
+						<p:commandButton value="Bestätigen"
+							action="#{beitragOpen.checkPassword}" update="@form message" oncomplete="$('.materialboxed').materialbox();"
+							style="margin-left:10px" />
+
+						<br />
+						<br />
+						<br />
+						<br />
+						<br />
+					</h:panelGroup>
+
+					<h:panelGroup layout="block"
+						rendered="#{!beitragOpen.openBeitrag.password or beitragOpen.passwordOK}">
+
+						<!-- keine Bilder -->
+						<h:panelGroup layout="block"
+							rendered="#{empty beitragOpen.openBeitrag.bilder}">
+							<h:outputText style="word-wrap: break-word;" escape="false"
+								value="#{beitragOpen.openBeitrag.text}" />
+							<br />
+							<h:outputText value="#{beitragOpen.openBeitrag.nutzerString}"
+								rendered="#{beitragOpen.openBeitrag.showAutor}" />
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block"
+								rendered="#{not empty beitragOpen.openBeitrag.bilder}">
+								
+							<div class="hide-on-small-only">
+							
+								<!-- Layout 0 -->
+								<h:panelGroup layout="block" rendered="#{beitragOpen.openBeitrag.layoutBeitrag eq 0}">
+									<div class="row" style="margin-bottom: 0">
+										<div class="col m8">
+											<h:outputText escape="false" value="#{beitragOpen.openBeitrag.text}" />
+											<br />
+											<h:outputText value="#{beitragOpen.openBeitrag.nutzerString}"
+												rendered="#{beitragOpen.openBeitrag.showAutor}" />
+										</div>
+										<div class="col m4"
+											style="text-align: right; vertical-align: top; overflow: hidden">
+											<ui:repeat var="p" value="#{beitragOpen.openBeitrag.bilder}">
+												<img class="materialboxed" data-caption="#{p.datei_name_ohne_endung}" width="100%" src="images/?id=#{p.datei_name_mit_id}"/>
+												<div align="right">
+													#{p.datei_name_ohne_endung}
+													<br />
+													<br />
+												</div>
+											</ui:repeat>
+										</div>
+									</div>
+								</h:panelGroup>
+							
+								<!-- Layout 1 -->
+								<h:panelGroup layout="block" rendered="#{beitragOpen.openBeitrag.layoutBeitrag eq 1}">
+									<h:outputText style="word-wrap: break-word;" escape="false" value="#{beitragOpen.openBeitrag.text}"/>
+									<br/>
+									<h:outputText value="#{beitragOpen.openBeitrag.nutzerString}" rendered="#{beitragOpen.openBeitrag.showAutor}"/>
+									<br/><br/>
+									<div class="row">
+									<div id="img-wall" style="text-align:center">
+										<ui:repeat var="p" value="#{beitragOpen.openBeitrag.bilder}">
+											<img class="materialboxed" style="width: 100%;padding: 10px"
+												data-caption="#{p.datei_name_ohne_endung}" src="images/?id=#{p.datei_name_mit_id}"/>
+										</ui:repeat>
+									</div>
+									</div>
+								</h:panelGroup>
+							
+								<!-- Layout 2 -->
+								<h:panelGroup layout="block" rendered="#{beitragOpen.openBeitrag.layoutBeitrag eq 2}">
+									<h:panelGroup layout="block" style="margin:auto">
+										<br/>
+										<p:galleria style="margin:auto;max-width:100%" value="#{beitragOpen.openBeitrag.dateiList}" var="image" panelWidth="800" panelHeight="500" showCaption="true">
+											<h:graphicImage value="images/?id=#{image.datei_name_mit_id}" alt="#{image.datei_name_ohne_endung}" title="" width="790"/>
+										</p:galleria>
+										<br/>
+									</h:panelGroup>
+									<br/><br/>
+									<h:outputText style="word-wrap: break-word;" escape="false" value="#{beitragOpen.openBeitrag.text}"/>
+									<br/>
+									<h:outputText value="#{beitragOpen.openBeitrag.nutzerString}" rendered="#{beitragOpen.openBeitrag.showAutor}"/>
+									
+								</h:panelGroup>
+							</div>
+							<div class="hide-on-med-and-up">
+								<h:outputText style="word-wrap: break-word;" escape="false"
+								value="#{beitragOpen.openBeitrag.text}" />
+								<br />
+								<h:outputText value="#{beitragOpen.openBeitrag.nutzerString}"
+									rendered="#{beitragOpen.openBeitrag.showAutor}" />
+									
+								<br/>
+								<ui:repeat var="p" value="#{beitragOpen.openBeitrag.bilder}">
+									<img class="materialboxed" data-caption="#{p.datei_name_ohne_endung}" width="100%" src="images/?id=#{p.datei_name_mit_id}"/>
+									<div align="right">
+										#{p.datei_name_ohne_endung}
+										<br />
+									</div>
+									<br/>
+								</ui:repeat>
+							</div>
+						</h:panelGroup>
+					</h:panelGroup>
+				</div>
+			</h:form>
+			
+			<br/>
+			
+			<h:link outcome="suche" value="zurück zu den Suchergebnissen"
+								styleClass="waves-effect waves-light btn" style="margin-left:30px; background-color: #{themeService.buttonColor}"
+								rendered="#{beitragOpen.fromSearchResult}">
+				<i class="material-icons left">arrow_back</i>
+			</h:link>
+			
+			<h:link outcome="home" value="zurück zu #{beitragOpen.openBeitrag.gruppe.name}" 
+								styleClass="waves-effect waves-light btn" style="margin-left:30px; background-color: #{themeService.buttonColor}"
+								rendered="#{!beitragOpen.fromSearchResult and beitragOpen.openBeitrag.gruppe != null}">
+				<f:param name="id" value="#{beitragOpen.openBeitrag.gruppe.gruppe_id}" />
+				<i class="material-icons left">arrow_back</i>
+			</h:link>
+			
+			<h:link outcome="home" value="zurück zur Startseite"
+								styleClass="waves-effect waves-light btn" style="margin-left:30px; background-color: #{themeService.buttonColor}"
+								rendered="#{!beitragOpen.fromSearchResult and beitragOpen.openBeitrag.gruppe == null}">
+				<i class="material-icons left">arrow_back</i>
+			</h:link>
+		</div>
+
+		<div class="col m2 hide-on-med-and-down">
+			<br /> <br />
+			<ui:insert>
+				<ui:include src="component_logos.xhtml" />
+			</ui:insert>
+		</div>
+
+	</div>
+	
+	<br/>
+
+	<ui:insert>
+		<ui:include src="component_footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

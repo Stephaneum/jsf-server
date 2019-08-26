@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Anmelden#{konfig.suffixTitle}</title>
+	<f:metadata>
+		<f:viewAction action="#{weiterleitung.index}" />
+	</f:metadata>
+	<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="theme-color" content="#{themeService.navbarColor}" />
+	<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+	<h:outputStylesheet library="css" name="material-icons.css" />
+	<h:outputStylesheet library="css" name="materialize.min.css" />
+	<h:outputStylesheet library="css" name="#{konfig.cssMaterial}" />
+	<h:outputScript library="js" name="materialize.min.js" />
+	<style>
+		@media only screen and (max-width: 600px) {
+		    .remove-margin-left {
+		        margin-left: 0 !important;
+		    }
+		}
+	</style>
+</h:head>
+
+<h:body style="background-color:#{themeService.backgroundPublicColor};">
+	<p:growl id="message" showDetail="true">
+		<p:autoUpdate />
+	</p:growl>
+
+	<ui:insert>
+		<ui:include src="component_nav.xhtml" />
+	</ui:insert>
+
+	<br />
+
+	<div class="row" style="min-height: 100vh; max-width: 1600px">
+	
+		<div class="col m3 hide-on-med-and-down"></div>
+		<div class="col s12 m9">
+			<a href="home.xhtml" class="green-text" style="margin-left:20px">Startseite</a>
+			<i class="fa fa-angle-right"></i> <a href="#" class="green-text">Login</a>
+		</div>
+		
+		<!-- second row -->
+		
+		<div class="col l2 hide-on-med-and-down">
+			<br/><br/>
+			<ui:insert>
+				<ui:include src="component_quicklinks.xhtml" />
+			</ui:insert>
+		</div>
+
+		<div class="col s12 m12 l9 remove-margin-left" style="margin-left: 30px">
+
+			<div style="min-height:100vh; padding:20px">
+				<h:panelGroup layout="block"  style="text-align:center" rendered="#{konfig.loggedIn}">
+
+					<h3 style="margin-top:200px">bereits eingeloggt als:</h3>
+					<h2>#{konfig.fullName}</h2>
+					
+					<p:button href="logout.xhtml" value="Abmelden" style="margin-top:100px;font-size:20pt"/>
+				</h:panelGroup>
+<!-- Zugangscode prüfen -->
+				<h:panelGroup layout="block" rendered="#{!konfig.loggedIn}">
+					<div class="row">
+						<h:panelGroup id="panelRegistrierung" layout="block" styleClass="col s12 m6 card white">
+							<h5 class="center-align">Registrierung</h5>
+							<h:form rendered="#{!authentifizierung.correctCode}">
+						
+								<div style="text-align:center">
+									<br/>
+									<p:inputText
+											value="#{authentifizierung.registerCode}"
+											required="true" 
+											requiredMessage="Du musst einen Zugangscode eingeben"
+											style="width:150px"
+											placeholder="Zugangscode"/>
+									<p:commandButton value="überprüfen" action="#{authentifizierung.checkZugangscode}" style="margin-left:10px" update="panelRegistrierung message"
+														widgetVar="widgetZugangscode" onstart="PF('widgetZugangscode').disable()" oncomplete="PF('widgetZugangscode').enable()"/>
+									<br/><br/><br/>
+									<p:outputLabel value="Die Zugangscodes erhalten Sie" style="font-style: italic;"/>
+									<br/>
+									<p:outputLabel value="von Herr(n) Czech." style="font-style: italic;"/>
+									<br/><br/>
+								</div>
+								
+							</h:form>
+							
+							<h:form rendered="#{authentifizierung.correctCode}">
+								
+								<br/>
+								<div style="text-align:center;">
+									<p:outputLabel value="Typ des Schlüssels: "/>
+									<p:outputLabel value="#{authentifizierung.rangString}" style="font-weight: bold;"/>
+								</div>
+								<br/>
+								
+								<div class="ui-g">
+						    		<div class="ui-g-4" style="text-align:right">
+						    			Vorname:
+						    		</div>
+						    		<div class="ui-g-8">
+						    			<p:inputText style="width:100%"
+										value="#{authentifizierung.registerVorname}" 
+										required="true" 
+										requiredMessage="Du musst einen Voramen eingeben" />
+						    		</div>
+						    		
+						    		<div class="ui-g-4" style="text-align:right">
+						    			Nachname:
+						    		</div>
+						    		<div class="ui-g-8">
+						    			<p:inputText style="width:100%"
+										value="#{authentifizierung.registerNachname}" 
+										required="true" 
+										requiredMessage="Du musst einen Nachamen eingeben" />
+						    		</div>
+						    		
+						    		<h:panelGroup layout="block" class="ui-g-4" style="text-align:right" rendered="#{authentifizierung.rang eq 0 or authentifizierung.rang eq 1}">
+						    			Klasse:
+						    		</h:panelGroup>
+						    		<h:panelGroup layout="block" class="ui-g-8" rendered="#{authentifizierung.rang eq 0 or authentifizierung.rang eq 1}">
+						    			<p:inputText style="width:100%"
+														value="#{authentifizierung.registerKlasse}"
+														placeholder="Form: 7b, 9a, 10-3, 12-4, ..."/>
+						    		</h:panelGroup>
+						    		
+						    		<div class="ui-g-4" style="text-align:right">
+						    			E-Mail:
+						    		</div>
+						    		<div class="ui-g-8">
+						    			<p:inputText style="width:100%"
+										value="#{authentifizierung.registerEmail}"
+										required="true" 
+										requiredMessage="Du musst eine E-Mail eingeben" />
+						    		</div>
+						    		
+						    		<div class="ui-g-4" style="text-align:right">
+						    			Passwort:
+						    		</div>
+						    		<div class="ui-g-8">
+						    			<p:password style="width:100%"
+										value="#{authentifizierung.registerPasswort}"
+										required="true" 
+										requiredMessage="Du musst ein Passwort eingeben" />
+						    		</div>
+						    		
+						    		<div class="ui-g-4" style="text-align:right">
+						    			Passwort wiederholen:
+						    		</div>
+						    		<div class="ui-g-8">
+						    			<p:password style="width:100%"
+										value="#{authentifizierung.registerPasswortWdh}"
+										required="true" 
+										requiredMessage="Du musst ein Passwort eingeben" />
+						    		</div>
+						    		
+						    		<div class="ui-g-4" style="text-align:right">
+						    			Geschlecht:
+						    		</div>
+						    		<div class="ui-g-7">
+						    			<p:selectOneMenu value="#{authentifizierung.registerGeschlecht}" style="width:100%" effect="none">
+											<f:selectItem itemLabel="Geschlecht auswählen" itemValue="" noSelectionOption="false" />
+											<f:selectItems value="#{authentifizierung.geschlechtVorgaben}" />
+										</p:selectOneMenu>
+						    		</div>
+						    		<div class="ui-g-1">
+						    		</div>
+						    		
+						    		<div class="ui-g-4" style="text-align:right">
+						    		</div>
+						    		<div class="ui-g-8">
+						    			<p:commandButton value="Jetzt registrieren" action="#{authentifizierung.register}" style="width:100%" update="panelRegistrierung message"/>
+						    		</div>
+						    	</div>
+								<br/>
+								<div style="text-align:center">
+									<p:outputLabel value="Als Lehrer/in ist eine Klassenangabe nicht erforderlich." rendered="#{authentifizierung.rang eq 1}" style="font-style: italic;"/>
+								</div>
+								
+							</h:form>
+						</h:panelGroup>
+						
+						<h:panelGroup id="panelLogin" layout="block" styleClass="col s12 m5 card remove-margin-left" style="margin-left: 30px">
+							<!-- Login -->
+							<h5 class="center-align">Login</h5>
+							<ui:insert>
+						  		<ui:include src="component_login.xhtml" />
+							</ui:insert>
+						</h:panelGroup>
+					</div>
+					
+				</h:panelGroup>	
+		
+			</div>
+		</div>
+
+	</div>
+
+	<ui:insert>
+		<ui:include src="component_footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

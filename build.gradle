@@ -1,0 +1,61 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.5'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'war'
+}
+
+apply plugin: 'com.bmuschko.tomcat'
+
+group 'de.stephaneum'
+version '1.0.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repository.primefaces.org"
+    }
+}
+
+dependencies {
+    compile "com.sun.faces:jsf-api:2.2.20"
+    compile "com.sun.faces:jsf-impl:2.2.20"
+    compile "javax.servlet:javax.servlet-api:3.1.0"
+    compile "javax.annotation:javax.annotation-api:1.3.2"
+
+    compile "javax.mail:javax.mail-api:1.6.2"
+    compile "org.apache.pdfbox:pdfbox:2.0.16"
+    compile "mysql:mysql-connector-java:5.1.48"
+    compile "commons-io:commons-io:2.6"
+    compile "org.jsoup:jsoup:1.10.3"
+    compile "javax.activation:activation:1.1.1"
+
+    compile "org.primefaces:primefaces:6.2"
+    compile "org.primefaces.themes:all-themes:1.0.10"
+
+    def tomcatVersion = '8.5.40'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.2",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+    // fix for java 9+
+    implementation "javax.xml.bind:jaxb-api:2.2.11"
+    implementation "com.sun.xml.bind:jaxb-core:2.2.11"
+    implementation "com.sun.xml.bind:jaxb-impl:2.2.11"
+    implementation "javax.activation:activation:1.1.1"
+}
+
+tomcat {
+    httpProtocol = 'org.apache.coyote.http11.Http11Nio2Protocol'
+    ajpProtocol  = 'org.apache.coyote.ajp.AjpNio2Protocol'
+}

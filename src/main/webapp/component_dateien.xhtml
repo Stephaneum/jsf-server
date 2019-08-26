@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+	
+    <body>
+	    <ui:composition>
+	    	<h:outputStylesheet library="css" name="fileLink.css" />
+			
+			<h:form>
+				<p:remoteCommand name="rcSaveOrdnerID" actionListener="#{dateien.saveOrdnerID}" />
+			</h:form>
+			<p:panel id="speicherPanel" header="#{dateien.titel}">
+		    	<br/>
+		    	<p:outputLabel style="color:#4c4c4c;" value="Dein Speicherplatz: #{dateien.storageUsedString} / #{dateien.storageString}"/>
+		    	<br/>
+				<br/>
+				
+	    		<p:commandButton id="btnUp" disabled="#{dateien.directoryView.root}" action="#{dateien.directoryView.upVerzeichnis}" update="@this path tableSpeicher" icon="fa fa-level-up fa-flip-horizontal"/>
+	    		<p:tooltip id="tooltipUp" for="btnUp" value="Ebene hoch" position="top"/>
+	    		
+	    		<p:commandButton id="btnNewFolder" update="panelNewFolder" action="#{dateien.prepareNewOrdner}" oncomplete="PF('overlayNewFolder').show()" icon="fa fa-plus" style="margin-left:10px;"/>
+	    		<p:tooltip for="btnNewFolder" value="Neuer Ordner" position="top"/>
+	    		
+	    		<p:commandButton id="btnNewUpload" rendered="#{dateien.storageFree gt 0}" update="panelUpload" onclick="rcSaveOrdnerID()" oncomplete="PF('overlayUpload').show()" style="margin-left:10px" icon="fa fa-upload"/>
+	    		<p:tooltip for="btnNewUpload" rendered="#{dateien.storageFree gt 0}" value="Datei hochladen" position="top"/>
+	    		
+	    		<p:outputLabel id="path" style="margin-left: 10px" value="#{dateien.directoryView.verzeichnis}"/>
+			
+				<br/>
+				<br/>
+				<p:dataTable id="tableSpeicher" value="#{dateien.directoryView.array}" var="r" emptyMessage="Keine Dateien vorhanden">
+		
+		   			<p:column headerText="Name" style="text-align: center;">
+			   			<p:commandLink rendered="#{r.ordner}" update="btnUp path tableSpeicher" action="#{dateien.directoryView.selectOrdner(r)}">
+							<h:outputText styleClass="fa fa-folder-open" value=""/>
+							<h:outputText value=" #{r.datei_name}" />
+						</p:commandLink>
+						
+						<p:commandLink rendered="#{!r.ordner}" update="panelVorschau" action="#{preview.prepare(r)}" oncomplete="PF('overlayVorschau').show()">
+							<h:outputText value=" #{r.datei_name}" />
+						</p:commandLink>
+		   			</p:column>
+		   			
+		   			<p:column headerText="Hochladedatum" width="170" style="text-align: center;">
+		   				#{r.datum}
+		   			</p:column>
+		   			
+		   			<p:column headerText="Größe" width="100" style="text-align: center;">
+		   				#{r.size}
+		   			</p:column>
+		   			
+		   			<p:column headerText="Von" style="text-align: center;">
+		   				#{r.eigtum}
+		   			</p:column>
+		   			
+		   			<p:column headerText="Aktionen" width="120" style="text-align: center;">
+		   				<h:form>
+		   					<p:commandButton id="btnDownload" rendered="#{!r.ordner}" icon="fa fa-arrow-down" style="margin-right:10px;">
+		        				<p:fileDownload value="#{dateien.download(r)}"/>
+		    				</p:commandButton>
+		    				<p:tooltip for="btnDownload" rendered="#{!r.ordner}" value="Herunterladen" position="top"/>
+		    				
+		   					<p:commandButton id="btnDelete" action="#{dateien.delete(r)}" disabled="#{(r.eigtum_nutzer_id ne dateien.nutzerID) and !dateien.deleteEverything}" update="speicherPanel message" icon="fa fa-trash">
+		   						<p:confirm header="Bestätigung" message="'#{r.datei_name}' wird entfernt. Dieser Vorgang kann nicht rückgängig gemacht werden. Fortfahren?" icon="ui-icon-alert" />
+		   					</p:commandButton>
+		   					<p:tooltip for="btnDelete" value="Löschen" position="top"/>
+	   					</h:form>
+		   			</p:column>
+		    	</p:dataTable>
+		    	<br/>
+		    	
+	    	</p:panel>
+	    	
+    <!-- Vorschau -->
+    
+		    <ui:insert>
+		  		<ui:include src="component_datei_vorschau.xhtml" />
+			</ui:insert>
+
+	<!-- Upload -->		
+		
+			<p:dialog id="panelUpload" header="Neue Datei hochladen" widgetVar="overlayUpload" modal="true" resizable="false" closeOnEscape="true">
+				<br/>
+				<p:messages id="messageText" showDetail="true" closable="true" />
+				<br/>
+				<div style="text-align: center;">
+					<p:outputLabel style="color:#4c4c4c;" value="Verzeichnis: "/>
+					<p:outputLabel style="color:#4c4c4c;font-weight: bold;" value="#{dateien.directoryView.verzeichnisNotEmpty}"/>
+				</div>
+				<br/><br/>
+				<h:form id="upload" enctype="multipart/form-data">
+					<p:fileUpload rendered="#{dateien.storageFree gt 0}" fileUploadListener="#{dateien.upload}"
+	    						update="speicherPanel panelUpload messageText" mode="advanced" dragDropSupport="true"
+	    						sizeLimit="#{dateien.storageFree}" invalidSizeMessage="Du hast nicht genügend Speicher"
+	    						label="Datei auswählen" uploadLabel="Hochladen" cancelLabel="Abbrechen"
+	    						multiple="true" sequential="true"
+	    						oncomplete="PF('overlayUpload').show()"/>
+				</h:form>
+				
+				<div style="text-align: center;">
+					<br/>
+					<p:outputLabel value="Drag &amp; Drop wird unterstützt."/>
+					<br/>
+					<br/>
+					<br/>
+					<p:outputLabel style="color:#4c4c4c;" value="Speicherplatz: "/>
+					<p:outputLabel style="color:#4c4c4c;font-weight: bold;" value="#{dateien.storageUsedString}"/>
+					<p:outputLabel style="color:#4c4c4c;" value=" von "/>
+					<p:outputLabel style="color:#4c4c4c;font-weight: bold;" value="#{dateien.storageString}"/>
+					<br/><br/>
+					<p:outputLabel style="color:#4c4c4c;" value="Verfügbar: "/>
+					<p:outputLabel style="color:#4c4c4c;font-weight: bold;" value="#{dateien.storageFreeString}"/>
+				</div>
+				<br/><br/>
+			</p:dialog>
+			
+	<!-- NewFolder -->
+		
+			<p:dialog id="panelNewFolder" header="Neuer Ordner" widgetVar="overlayNewFolder" modal="true" resizable="false" closeOnEscape="true">
+				<br/>
+				<div style="text-align: center;">
+					<p:outputLabel style="color:#4c4c4c;" value="Verzeichnis: "/>
+					<p:outputLabel style="color:#4c4c4c;font-weight: bold;" value="#{dateien.directoryView.verzeichnisNotEmpty}"/>
+				
+					<br/><br/><br/>
+					<h:form>
+			            <p:inputText value="#{dateien.newName}" size="50"/>
+			            <p:commandButton value="Erstellen" action="#{dateien.addOrdner}" update="speicherPanel message" oncomplete="PF('overlayNewFolder').hide()" style="margin-left:10px;"/>
+		        	</h:form>
+			        <br/><br/>
+		        	<p:outputLabel style="color:#4c4c4c;font-style: italic;" value="Folgende Zeichen sind nicht erlaubt: /, \"/>
+					<br/><br/>
+				</div>
+			</p:dialog>
+				
+	    </ui:composition>
+    </body>
+</html>

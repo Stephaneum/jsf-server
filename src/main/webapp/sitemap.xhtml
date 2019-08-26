@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Sitemap#{konfig.suffixTitle}</title>
+	<f:metadata>
+		<f:viewAction action="#{weiterleitung.index}" />
+	</f:metadata>
+	<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="theme-color" content="#{themeService.navbarColor}" />
+	<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+	<h:outputStylesheet library="css" name="material-icons.css" />
+	<h:outputStylesheet library="css" name="materialize.min.css" />
+	<h:outputStylesheet library="css" name="#{konfig.cssMaterial}" />
+	<h:outputScript library="js" name="materialize.min.js" />
+	<style>
+		.link:hover { 
+    		color: green;
+    		font-weight:bold;
+		}
+	</style>
+</h:head>
+
+<h:body style="background-color:#{themeService.backgroundPublicColor};">
+	<p:growl id="message" showDetail="true">
+		<p:autoUpdate />
+	</p:growl>
+
+	<ui:insert>
+		<ui:include src="component_nav.xhtml" />
+	</ui:insert>
+
+	<br />
+
+	<div id="main-row" class="row" style="min-height: 100vh">
+	
+		<div class="col m4 l2 hide-on-small-only"></div>
+		<div class="col s12 m8">
+			<a href="home.xhtml" class="green-text" style="margin-left:20px">Startseite</a>
+			<i class="fa fa-angle-right"></i> <a href="#" class="green-text">Sitemap</a>
+		</div>
+		<div class="col m2 hide-on-med-and-down"><br/></div>
+		
+		<div class="col m4 l2 hide-on-small-only">
+			<br/><br/>
+			<ui:insert>
+				<ui:include src="component_quicklinks.xhtml" />
+			</ui:insert>
+		</div>
+
+		<div class="col s12 m8">
+
+			<div class="card-panel white">
+				<h5>Sitemap</h5>
+				<br />
+				<h:form>
+					<p:tree value="#{sitemap.root}" var="node" style="width:100%">
+				        <p:treeNode>
+				        	<p:spacer width="5" height="0"/>
+				        	<h:outputText style="color:gray;font-size:#{node.fontSize}pt" value="#{node.name}" rendered="#{node.gruppe == null and node.link == null}"/>
+				        	<h:outputLink style="text-decoration: none !important;font-size:#{node.fontSize}pt" value="#{node.link}.xhtml" rendered="#{node.gruppe == null and node.link != null and !node.externalLink}">
+						        <h:outputText styleClass="link" value="#{node.name}" />
+						    </h:outputLink>
+						    <h:outputLink style="text-decoration: none !important;font-size:#{node.fontSize}pt" value="home.xhtml?id=#{node.gruppe.gruppe_id}" rendered="#{node.gruppe != null and !node.externalLink}">
+						        <h:outputText styleClass="link" value="#{node.name}" />
+						    </h:outputLink>
+						    <h:outputLink style="text-decoration: none !important;font-size:#{node.fontSize}pt" value="#{node.link}" target="_blank" rendered="#{node.externalLink}">
+						        <h:outputText styleClass="link" value="#{node.name}" />
+						    </h:outputLink>
+				        </p:treeNode>
+				    </p:tree>
+			    </h:form>
+			</div>
+		</div>
+
+		<div class="col m2 hide-on-med-and-down">
+			<br/><br/>
+			<ui:insert>
+				<ui:include src="component_logos.xhtml" />
+			</ui:insert>
+		</div>
+
+	</div>
+
+	<ui:insert>
+		<ui:include src="component_footer.xhtml" />
+	</ui:insert>
+</h:body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<title>Projekte#{konfig.suffixTitle}</title>
+		<f:metadata>
+    		<f:viewAction action="#{weiterleitung.login}" />
+		</f:metadata>
+		<f:event type="preRenderView" listener="#{konfig.addHeader}" />
+		<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
+		<h:outputStylesheet library="css" name="#{konfig.css}" />
+		<h:outputStylesheet library="css" name="fileLink.css" />
+		<h:outputScript library="js" name="topMenu.js" />
+		<h:outputScript library="js" name="preview.js" />
+		
+		<style>
+			.ui-selectcheckboxmenu-panel{
+				width: 300px /* Primefaces-Bug */
+			}
+		</style>
+	</h:head>
+	
+	<h:body style="background-color:#{themeService.backgroundColor};">
+		<p:growl id="message" showDetail="true">
+			<p:autoUpdate />
+		</p:growl>
+		
+		<p:confirmDialog global="true">
+			<div style="text-align:center">
+				<p:commandButton value="Nein" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				<p:commandButton value="Ja" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			</div>
+		</p:confirmDialog>
+		
+		<div id="hidden-div">
+		
+<!-- Side Menu -->
+			<h:form style="position:fixed;">
+				<p:menu model="#{sideMenu.model}" style="font-size:11pt;width:160px;"/>
+			</h:form>
+		
+			<p:panel id="big-div" rendered="#{konfig.loggedIn}">
+					
+<!-- Top Menu -->
+				<h:form>
+					<p:menubar styleClass="centeredMenuBar ui-widget-header ui-corner-all" model="#{topMenu.model}"
+								style="top:0px;width:953px;position:fixed;transform: translateX(0%);z-index:+99;height:25px;" />
+				</h:form>	
+					
+				<br/><br/><br/>
+				
+				<h2 class="title" style="color:#4c4c4c;">Projekte</h2>
+				
+				<br/>
+				
+				<h:panelGroup id="panelAkzeptieren" layout="block">
+					<h:panelGroup layout="block" rendered="#{not empty projektList.projektArrayAkzeptieren}">
+						<p:panel header="Anfragen">
+							<br/>
+							<p:outputLabel value="Folgende Projekte sind noch nicht freigegeben, weil alle Betreuer/innen akzeptieren müssen."/>
+							
+							<br/><br/>
+							<p:dataTable value="#{projektList.projektArrayAkzeptieren}" var="r" emptyMessage="Keine Projekte vorhanden">
+							
+								<p:column headerText="Projektname" style="text-align: center;" width="300">
+									#{r.name}
+								</p:column>
+								
+								<p:column headerText="Teilnehmer/innen" style="text-align: center;">
+									#{r.teilnehmer}
+								</p:column>
+								
+								<p:column headerText="Aktionen" width="150" style="text-align: center;" rendered="#{!projektList.schueler}">
+									<h:form rendered="#{!r.akzeptiert}">
+										<p:commandButton id="accept" action="#{projektList.akzeptieren(r)}" ajax="false" update="@all" icon="ui-icon-check" style="margin-right:20px"/>
+										<p:commandButton id="decline" action="#{projektList.ablehnen(r)}" ajax="false" update="panelAkzeptieren message" icon="ui-icon-close"/>
+										
+										<p:tooltip for="accept" value="Akzeptieren" position="top"/>
+										<p:tooltip for="decline" value="Ablehnen" position="top"/>
+									</h:form>
+									<p:outputLabel value="warten auf andere Betreuer/innen" rendered="#{r.akzeptiert}"/>
+								</p:column>
+								<p:column headerText="Status" width="130" style="text-align: center;" rendered="#{projektList.schueler}">
+									<p:outputLabel value="warten auf Genehmigung"/>
+								</p:column>
+							</p:dataTable>
+							<br/>
+						</p:panel>
+						<br/>
+						<br/>
+						<br/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+<!-- Meine Projekte -->
+				<p:panel id="panelMyProjects" header="Meine Projekte">
+					<br/>
+					<p:dataTable value="#{projektList.projektArray}" var="r" emptyMessage="Keine Projekte vorhanden">
+				
+						<p:column headerText="Projektname" style="text-align: center;" width="300">
+							<h:form>
+								<p:commandLink action="#{projektList.openProjekt(r)}" ajax="false">
+									<h:outputText value="#{r.name}" />
+								</p:commandLink>
+							</h:form>
+						</p:column>
+						
+						<p:column headerText="Teilnehmer/innen" style="text-align: center;">
+							#{r.teilnehmer}
+						</p:column>
+						
+						<p:column headerText="Aktionen" width="140" style="text-align: center;">
+							<h:form>
+								<p:commandButton value="Öffnen" action="#{projektList.openProjekt(r)}" ajax="false" icon="fa fa-sign-in"/>
+							</h:form>
+						</p:column>
+					</p:dataTable>
+					<br/>
+				</p:panel>
+				<br/>
+				<br/>
+				<br/>
+				
+<!-- Alle Projekte (Admin) -->
+ 
+				<h:panelGroup id="adminOnly" layout="block" rendered="#{projektList.admin}">
+					<p:panel header="Alle Projekte">
+						<br/>
+						<p:dataTable value="#{projektList.projektArrayAll}" var="r" emptyMessage="Keine Projekte vorhanden">
+					
+							<p:column headerText="Projektname" style="text-align: center;">
+								<p:commandLink update="panelPreview" action="#{projektList.previewProjekt(r)}" oncomplete="PF('overlayPreview').show()">
+									<h:outputText value="#{r.name}" />
+								</p:commandLink>
+							</p:column>
+							
+							<p:column headerText="Projektleiter/in" style="text-align: center;">
+								#{r.projektLeiter.vorname} #{r.projektLeiter.nachname}
+							</p:column>
+							
+							<p:column headerText="Aktionen" width="120" style="text-align:center;">
+								<h:form>
+									<p:commandButton id="btnChat" action="#{projektList.toggleChat(r)}" update="adminOnly message" icon="fa #{r.chatIcon}" />
+									<p:tooltip for="btnChat" value="Chat" position="top"/>
+									
+									<p:commandButton id="btnDeleteProjekt" action="#{projektList.deleteProjekt(r)}" update="@all" style="margin-left: 10px;" icon="fa fa-trash">
+										<p:confirm header="Bestätigung" message="Die Dateien in dem Projekt #{r.name} werden ebenfalls gelöscht. Fortfahren?" icon="ui-icon-alert" />
+									</p:commandButton>
+									<p:tooltip for="btnDeleteProjekt" value="Projekt löschen" position="top"/>
+								</h:form>
+							</p:column>
+								
+						</p:dataTable>
+						<br/>
+					</p:panel>
+					
+					<br/>
+					<br/>
+					<br/>
+		
+	<!-- Vorschau -->
+					<ui:insert>
+				  		<ui:include src="component_datei_vorschau.xhtml" />
+					</ui:insert>
+	<!-- Hineinschauen -->				
+					<p:dialog id="panelPreview" header="#{projektOpen.projekt.name}" widgetVar="overlayPreview" modal="true" resizable="false" closeOnEscape="true">
+						<p:scrollPanel mode="native" style="width:950px;height:85vh;">
+						
+							<br/><br/>
+							<p:outputLabel value="Projektleiter/in: " style="font-size:1.5em;margin-left:50px"/>
+							<p:outputLabel value="#{projektOpen.leiterString}" style="font-size:1.5em;font-weight:bold"/>
+							<br/><br/>
+							<p:outputLabel value="Betreuer/innen: " style="margin-left:50px"/>
+							<p:outputLabel value="#{projektOpen.betreuerString}" rendered="#{not empty projektOpen.betreuerString}" style="font-weight:bold"/>
+							<p:outputLabel value="keine" rendered="#{empty projektOpen.betreuerString}" style="font-weight:bold"/>
+							<br/>
+							<p:outputLabel value="verknüpfte Gruppe: " style="margin-left:50px"/>
+							<p:link href="home.xhtml?id=#{projektOpen.gruppe.gruppe_id}" target="_blank" value="#{projektOpen.gruppe.name}"
+										rendered="#{projektOpen.gruppe != null}" style="font-weight:bold"/>
+							<p:outputLabel value="keine" rendered="#{projektOpen.gruppe == null}" style="font-weight:bold"/>
+							
+							<br/><br/><br/>
+							<h2 class="title" style="text-align:center">Teilnehmer/innen</h2>
+							<p:dataTable value="#{projektOpen.nutzer_projekt}" var="r">
+					   			<p:column headerText="Vorname" style="text-align:center;">
+					   				#{r.vorname}
+					   			</p:column>
+					   			
+					   			<p:column headerText="Nachname" style="text-align:center;">
+					   				#{r.nachname}
+					   			</p:column>
+					   			
+					   			<p:column headerText="Klasse" style="text-align:center;">
+					   				#{r.klasse}
+					   			</p:column>
+					    	</p:dataTable>
+					    	
+					    	<br/><br/>
+					    	
+					    	<h2 class="title" style="text-align:center">Projektspeicher</h2>
+					    	
+					    	<h:form>
+								<p:commandButton id="btnUp" disabled="#{dateien.directoryView.root}" action="#{dateien.directoryView.upVerzeichnis}" update="@form" style="margin-left:20px" icon="fa fa-level-up fa-flip-horizontal"/>
+							    <p:tooltip for="btnUp" value="Ebene hoch" position="top"/>
+							    <p:outputLabel style="margin-left: 10px" value="#{dateien.directoryView.verzeichnisNotEmpty}"/>
+								<br/>
+								<br/>
+								
+								<p:dataTable id="table_speicher" value="#{dateien.directoryView.array}" var="r" emptyMessage="Keine Dateien vorhanden">
+			
+									<p:column headerText="Name" style="text-align: center;">
+										<p:commandLink rendered="#{r.ordner}" update="@form" action="#{dateien.directoryView.selectOrdner(r)}">
+											<h:outputText styleClass="fa fa-folder-open" value=""/>
+											<h:outputText value=" #{r.datei_name}" />
+										</p:commandLink>
+										
+										<p:commandLink rendered="#{!r.ordner}" update="panelVorschau" action="#{preview.prepare(r)}" oncomplete="PF('overlayVorschau').show()">
+											<h:outputText value=" #{r.datei_name}" />
+										</p:commandLink>
+									</p:column>
+									
+									<p:column headerText="Hochladedatum" width="170" style="text-align: center;">
+										#{r.datum}
+									</p:column>
+									
+									<p:column headerText="Größe" width="100" style="text-align: center;">
+										#{r.size}
+									</p:column>
+									
+									<p:column headerText="Von" style="text-align: center;">
+						   				#{r.eigtum}
+						   			</p:column>
+									
+									<p:column headerText="Aktionen" width="120" style="text-align: center;">
+											<p:commandButton id="btnDownload" rendered="#{!r.ordner}" ajax="false" style="margin-right:10px;" icon="fa fa-arrow-down">
+												<p:fileDownload value="#{dateien.download(r)}" update="table_speicher"/>
+											</p:commandButton>
+											<p:tooltip for="btnDownload" value="Herunterladen" position="top"/>
+											
+											<p:commandButton id="btnDelete" action="#{dateien.delete(r)}" oncomplete="PF('overlayPreview').show();" update="@form" icon="fa fa-trash" />
+											<p:tooltip for="btnDelete" value="Löschen" position="top"/>
+										
+									</p:column>
+					    		</p:dataTable>
+							</h:form>
+					    	
+					    	<br/><br/><br/>
+					    	
+					    	<p:panel id="panelChat" style="width:600px;margin:auto;text-align:center">
+					    		<f:facet name="header">
+									<p:outputLabel value="Chat"/>
+									<p:commandButton id="btnClearChat" action="#{projektOpen.clearNachrichten}" disabled="#{projektOpen.nachrichtenAnzahl eq 0}" update="panelChat" icon="fa fa-trash" style="margin-left:30px">
+										<p:confirm header="Bestätigung" message="Es werden alle Nachrichten von #{projektOpen.projekt.name} gelöscht. Fortfahren?" icon="ui-icon-alert" />
+						   			</p:commandButton>
+				                	<p:tooltip for="btnClearChat" value="gesamten Chatverlauf löschen" position="top"/>
+				                </f:facet>
+				                
+					    		<h:outputLabel id="chatString" value="#{projektOpen.chat}" escape="false" style="text-align:left"/>
+					    		<p:outputLabel value="Der Chatverlauf ist leer." rendered="#{empty projektOpen.chat}"/>
+					    	</p:panel>
+					    	
+					    	<br/><br/><br/>
+						</p:scrollPanel>
+					</p:dialog>
+				</h:panelGroup>
+	
+<!-- Neues Projekt erstellen -->
+				<p:panel id="panelNewProject" header="Neues Projekt erstellen" style="width:550px;" rendered="#{projektList.allowCreateProjekt}">
+					<h:form>
+						<br/>
+						<h:panelGrid columns="2" style="margin-left: auto;margin-right: auto;" cellpadding = "5"
+										rendered="#{!projektList.schueler}">
+							Name des Projekts:
+							<p:inputText 
+								value="#{projektList.projektName}"
+								required="true" requiredMessage="Kein Projektname eingegeben"
+								style="margin-left:20px;width:280px;">
+							</p:inputText>
+							<p:outputLabel value=" "/>
+							<p:commandButton value="Projekt erstellen" action="#{projektList.createProjekt}" icon="fa fa-plus"
+								style="margin-left:20px;margin-top:20px" update="panelNewProject panelMyProjects adminOnly message" 
+								onclick="PF('overlayNewProject').show();" oncomplete="PF('overlayNewProject').hide();"/>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2" style="margin-left: auto;margin-right: auto;" cellpadding = "5"
+										rendered="#{projektList.schueler}">
+							Name des Projekts:
+							<p:inputText 
+								value="#{projektList.projektName}"
+								required="true" requiredMessage="Kein Projektname eingegeben"
+								style="margin-left:20px;width:280px;">
+							</p:inputText>
+							Betreuer/in:
+							<p:selectCheckboxMenu value="#{projektList.selectedBetreuer}" style="width:300px;margin-left:20px;"
+											label="Betreuer" multiple="true"
+											filter="true" filterMatchMode="contains">
+								<f:selectItems value="#{projektList.betreuerArray}"/>
+							</p:selectCheckboxMenu>
+							<p:outputLabel value=" "/>
+							<p:commandButton value="Projekt erstellen" action="#{projektList.createProjekt}" icon="fa fa-plus"
+								style="margin-left:20px;margin-top:20px" update="panelNewProject panelAkzeptieren panelMyProjects adminOnly message" 
+								onclick="PF('overlayNewProject').show();" oncomplete="PF('overlayNewProject').hide();"/>
+						</h:panelGrid>
+						<br/>
+					</h:form>
+				</p:panel>
+				<br/>
+				<br/>
+			</p:panel>
+			<br/>
+			<p:dialog widgetVar="overlayNewProject" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+				<h2 class="title" style="text-align:center">Projekt wird erstellt</h2>
+			    <p:graphicImage url="resources/img/ajax-loader.gif" />
+			</p:dialog>
+			<div id="bottom">
+				<h:link outcome="kontakt" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Kontakt"/>
+				<p:outputLabel style="font-size:10pt" value=" | "/>
+				<h:link outcome="impressum" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Impressum"/>
+				<p:outputLabel style="font-size:10pt" value=" | "/>
+				<h:link outcome="sitemap" styleClass="ui-link ui-widget" style="font-size:10pt;color:#125100;text-decoration:none;" value="Sitemap"/>
+				<br/><br/>
+				<h:outputText style="font-size:12pt;word-wrap: break-word;" escape="false" value="#{konfig.bottomText}"/>
+			</div>
+			<br/>
+		</div>
+	</h:body>
+</html>
