@@ -40,6 +40,12 @@ public class Sicherung {
 	}
 	
 	public static void startBackupTimer() {
+
+		if(true) {
+			Konsole.backup("Backup-Timer ist deaktiviert, wird demnächst aus dem JSF Projekt entfernt.");
+			return;
+		}
+
 		if(timerRunning)
 			return;
 		
