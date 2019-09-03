@@ -59,7 +59,7 @@
 		   			
 		   			<p:column headerText="Aktionen" width="120" style="text-align: center;">
 		   				<h:form>
-		   					<p:commandButton id="btnDownload" rendered="#{!r.ordner}" icon="fa fa-arrow-down" style="margin-right:10px;">
+		   					<p:commandButton id="btnDownload" ajax="false" rendered="#{!r.ordner}" icon="fa fa-arrow-down" style="margin-right:10px;">
 		        				<p:fileDownload value="#{dateien.download(r)}"/>
 		    				</p:commandButton>
 		    				<p:tooltip for="btnDownload" rendered="#{!r.ordner}" value="Herunterladen" position="top"/>
