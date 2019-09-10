@@ -1749,8 +1749,19 @@
 									</h:panelGroup>
 		<!-- Layout 2  -->
 									<h:panelGroup layout="block" rendered="#{vorschauPost.layoutBeitrag eq 2}">
-										<h:panelGroup layout="block" style="margin:auto">
-											<br/>
+										<br/>
+										<h:panelGroup layout="block" style="margin:auto; text-align: center" rendered="#{vorschauPost.dateiList.size() eq 1}">
+											<!-- only one picture -->
+											<div style="display: inline-block; width: 600px">
+												<h:graphicImage value="images/?id=#{vorschauPost.dateiList[0].datei_name_mit_id}" alt="#{vorschauPost.dateiList[0].datei_name_ohne_endung}" style="width: 100%; border-radius: 10px"/>
+												<div style="text-align: right">
+													<p style="margin: 0 20px 0 0">#{vorschauPost.dateiList[0].datei_name_ohne_endung}</p>
+												</div>
+											</div>
+
+										</h:panelGroup>
+										<h:panelGroup layout="block" style="margin:auto" rendered="#{vorschauPost.dateiList.size() ne 1}">
+
 											<p:galleria style="margin-left:25px" value="#{vorschauPost.dateiList}" var="image" panelWidth="800" panelHeight="500" showCaption="true">
 												<h:graphicImage value="images/?id=#{image.datei_name_mit_id}" alt="#{image.datei_name_ohne_endung}" title="" width="790"/>
 											</p:galleria>

@@ -73,7 +73,7 @@ public class Beitrag implements Serializable {
 				
 				if(layoutVorschau == LAYOUT_VORSCHAU_BILDREIHE || layoutVorschau == LAYOUT_VORSCHAU_BILDREIHE_TEXT) {
 					
-					int anzahl = bilder.length >= 5 ? 5 : bilder.length;
+					int anzahl = Math.min(bilder.length, 5);
 					
 					bilder5 = new Datei[anzahl];
 					for(int i = 0; i < bilder5.length; i++)
