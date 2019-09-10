@@ -457,7 +457,7 @@
 				<div class="card" style="background-color: #{themeService.beitragListColor}">
 					
 					<h:panelGroup layout="block" class="card-image hide-on-med-and-up z-depth-2" rendered="#{not empty b.bilder}">
-				       <img src="images/?id=#{b.bilder[0].datei_name_mit_id}"/>
+						<a href="beitrag.xhtml?id=#{b.beitrag_id}"><img src="images/?id=#{b.bilder[0].datei_name_mit_id}"/></a>
 				     </h:panelGroup>
 				     
 					<div class="card-content" style="color: #{themeService.beitragTextColor}">
