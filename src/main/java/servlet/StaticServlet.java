@@ -110,6 +110,7 @@ public class StaticServlet extends HttpServlet {
 		} catch (IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			falseURL500(response);
+			e.printStackTrace();
 		}
 	}
 	
