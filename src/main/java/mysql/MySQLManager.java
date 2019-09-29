@@ -179,8 +179,8 @@ public class MySQLManager {
 					MN_GRUPPE_ID = 1, //projekt_gruppe
 					MN_DATEI_ID = 0,//datei_beitrag
 					MN_BEITRAG_ID = 1,
-					VARIABLE = 0,//konfig
-					KONFIG_WERT = 1,
+					VARIABLE = 1,//konfig
+					KONFIG_WERT = 2,
 					LOG_DATUM = 0, //LOG
 					LOG_TYP = 1,
 					LOG_EREIGNIS = 2,
@@ -365,6 +365,7 @@ public class MySQLManager {
 				{"FOREIGN KEY (datei_id) REFERENCES datei(id) ON DELETE CASCADE",""}, //-->DATEI.ID
 				{"FOREIGN KEY (beitrag_id) REFERENCES beitrag(id) ON DELETE CASCADE",""},  //-->BEITRAG.ID	
 			},{ //konfig
+				{"id","INT"},
 				{"variable","VARCHAR(64)"},
 				{"wert","TEXT"},
 			},{ //log
