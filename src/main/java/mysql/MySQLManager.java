@@ -176,6 +176,7 @@ public class MySQLManager {
 					NACHRICHT_LEHRERCHAT = 4,
 					MN_PROJEKT_ID = 0,//nutzer_projekt
 					MN_BETREUER = 2,
+                    MN_NUTZER_PROJEKT_ID = 4,
 					MN_GRUPPE_ID = 1, //projekt_gruppe
 					MN_DATEI_ID = 1,//datei_beitrag
 					MN_BEITRAG_ID = 2,
@@ -349,7 +350,9 @@ public class MySQLManager {
 				{"nutzer_id","INT"},
 				{"betreuer","TINYINT(1)"},
 				{"akzeptiert","TINYINT(1)"},
-				
+                {"id", "INT"},
+
+                {"PRIMARY KEY(id)",""}, //NUTZER_PROJEKT.ID
 				{"FOREIGN KEY (projekt_id) REFERENCES projekt(id) ON DELETE CASCADE",""}, //-->PROJEKT.ID
 				{"FOREIGN KEY (nutzer_id) REFERENCES nutzer(id) ON DELETE CASCADE",""},  //-->NUTZER.ID
 			},{ //projekt_gruppe
@@ -1098,7 +1101,7 @@ public class MySQLManager {
 	
 	int getAnzahlBilderBeitrag() {
 		try {
-			ResultSet rs = sendQuery("SELECT count(*) FROM "+TABLE[BEITRAG]+","+TABLE[DATEI_BEITRAG]+" WHERE "+DB[BEITRAG][GENEHMIGT][0]+"=true AND "+DB[BEITRAG][ID][0]+"="+DB[DATEI_BEITRAG][MN_BEITRAG_ID][0], true);
+			ResultSet rs = sendQuery("SELECT count(*) FROM "+TABLE[BEITRAG]+","+TABLE[DATEI_BEITRAG]+" WHERE "+DB[BEITRAG][GENEHMIGT][0]+"=true AND "+TABLE[BEITRAG]+"."+DB[BEITRAG][ID][0]+"="+DB[DATEI_BEITRAG][MN_BEITRAG_ID][0], true);
 			rs.next();
 			int anzahl = rs.getInt(1);
 			rs.close();
@@ -2765,7 +2768,7 @@ public class MySQLManager {
 			rs.close();
 			
 			//der Projektleiter ist kein betreuer und hat bereits akzeptiert
-			sendQuery("INSERT INTO "+TABLE[NUTZER_PROJEKT]+" VALUES("+projekt_id+","+nutzer_id+",false,true)",false);
+			sendQuery("INSERT INTO "+TABLE[NUTZER_PROJEKT]+"("+DB[NUTZER_PROJEKT][MN_PROJEKT_ID][0]+","+DB[NUTZER_PROJEKT][NUTZER_ID][0]+","+DB[NUTZER_PROJEKT][MN_BETREUER][0]+","+DB[NUTZER_PROJEKT][AKZEPTIERT][0]+") VALUES("+projekt_id+","+nutzer_id+",false,true)",false);
 			return new Projekt(projekt_id,projekt_name);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -2785,7 +2788,7 @@ public class MySQLManager {
 	
 	boolean joinProjekt(int nutzer_id, int projekt_id, boolean betreuer, boolean akzeptiert) {
 		try {
-			sendQuery("INSERT INTO "+TABLE[NUTZER_PROJEKT]+" VALUES("+projekt_id+","+nutzer_id+","+betreuer+","+akzeptiert+")",false);
+			sendQuery("INSERT INTO "+TABLE[NUTZER_PROJEKT]+"("+DB[NUTZER_PROJEKT][MN_PROJEKT_ID][0]+","+DB[NUTZER_PROJEKT][NUTZER_ID][0]+","+DB[NUTZER_PROJEKT][MN_BETREUER][0]+","+DB[NUTZER_PROJEKT][AKZEPTIERT][0]+") VALUES("+projekt_id+","+nutzer_id+","+betreuer+","+akzeptiert+")",false);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -3638,7 +3641,7 @@ public class MySQLManager {
 			rs.close();
 			
 			//datei
-			rs = sendQuery("SELECT * FROM "+TABLE[DATEI]+","+TABLE[DATEI_BEITRAG]+" WHERE "+DB[DATEI][ID][0]+"="+DB[DATEI_BEITRAG][MN_DATEI_ID][0]+" AND "+DB[DATEI_BEITRAG][MN_BEITRAG_ID][0]+"="+beitrag_id, true);
+			rs = sendQuery("SELECT * FROM "+TABLE[DATEI]+","+TABLE[DATEI_BEITRAG]+" WHERE "+TABLE[DATEI]+"."+DB[DATEI][ID][0]+"="+DB[DATEI_BEITRAG][MN_DATEI_ID][0]+" AND "+DB[DATEI_BEITRAG][MN_BEITRAG_ID][0]+"="+beitrag_id, true);
 			return resultSetToDatei(rs, anzahl);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -5587,9 +5590,6 @@ public class MySQLManager {
 		/**
 		 * 
 		 * @param length wie groß darf soll der Zwischenspeicher maximal sein? IndexOutOfBounds !!!!
-		 * @param useString Key -> String
-		 * @param useNutzer Key -> Nutzer-Objekt
-		 * @param useGruppe Key -> Gruppe
 		 */
 		@SuppressWarnings("unchecked")
 		public Zwischenspeicher(int length) {
