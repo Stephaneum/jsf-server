@@ -2009,7 +2009,7 @@ public class Datenbank {
 	 * 
 	 * @param file Datei von Primefaces-API (das was der Nutzer hochlädt)
 	 * @param mode z.B. Datei.MODE_PRIVATSPEICHER
-	 * @param projekt_rubrik_id wird verwendet, falls Projekt- oder Rubrik-Modus
+	 * @param klasse_projekt_rubrik_id wird verwendet, falls Projekt- oder Rubrik-Modus
 	 * @param ordner_id Ordner ID oder Datei.ORDNER_HOME
 	 * @return Datei-Objekt: ENTHÄLT NUR DIE ID!
 	 * @throws Exception
