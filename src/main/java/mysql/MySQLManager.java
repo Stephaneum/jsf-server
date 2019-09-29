@@ -181,9 +181,9 @@ public class MySQLManager {
 					MN_BEITRAG_ID = 2,
 					VARIABLE = 1,//konfig
 					KONFIG_WERT = 2,
-					LOG_DATUM = 0, //LOG
-					LOG_TYP = 1,
-					LOG_EREIGNIS = 2,
+					LOG_DATUM = 1, //LOG
+					LOG_TYP = 2,
+					LOG_EREIGNIS = 3,
 					EIGENTUM = 2, //ordner
 					ORDNER_LEHRERCHAT = 5,
 					PARENT = 6,
@@ -373,9 +373,12 @@ public class MySQLManager {
 
                 {"PRIMARY KEY(id)",""} //KONFIG.ID
 			},{ //log
+				{"id", "INT"},
 				{"datum","DATETIME DEFAULT CURRENT_TIMESTAMP"},
 				{"typ","INT"},
 				{"ereignis","TEXT"},
+
+				{"PRIMARY KEY(id)",""} //LOG.ID
 			},{ //statistiken: Cloud
 				{"datum","DATETIME DEFAULT CURRENT_TIMESTAMP"},
 				{"size","INT"}, //in bytes
