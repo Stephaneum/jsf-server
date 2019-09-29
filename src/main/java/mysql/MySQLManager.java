@@ -190,6 +190,7 @@ public class MySQLManager {
 					PARENT = 6,
 					STATS_DATE = 0, //stats_cloud
 					STATS_SIZE = 1,
+                    STATS_CLOUD_ID = 2,
 					STATS_TAGE_DATUM = 1, //stats_tage
 					STATS_TAGE_ANZAHL = 2,
 					STATS_STUNDEN_INDEX = 0,
@@ -387,6 +388,9 @@ public class MySQLManager {
 			},{ //statistiken: Cloud
 				{"datum","DATETIME DEFAULT CURRENT_TIMESTAMP"},
 				{"size","INT"}, //in bytes
+                {"id","INT NOT NULL AUTO_INCREMENT"},
+
+                {"PRIMARY KEY(id)",""},
 			},{ //statistiken: Tage
 				{"id","INT NOT NULL AUTO_INCREMENT"},
 				{"datum","DATETIME DEFAULT CURRENT_TIMESTAMP"},
