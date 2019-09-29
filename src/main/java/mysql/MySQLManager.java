@@ -358,7 +358,9 @@ public class MySQLManager {
 			},{ //projekt_gruppe
 				{"projekt_id","INT"},
 				{"gruppe_id","INT"},
-				
+				{"id","INT"},
+
+				{"PRIMARY KEY(id)",""}, //PROJEKT_GRUPPE.ID
 				{"FOREIGN KEY (projekt_id) REFERENCES projekt(id) ON DELETE CASCADE",""}, //-->PROJEKT.ID
 				{"FOREIGN KEY (gruppe_id) REFERENCES gruppe(id) ON DELETE CASCADE",""},  //-->GRUPPE.ID
 			},{ //datei_beitrag
@@ -2523,7 +2525,7 @@ public class MySQLManager {
 			//Anzahl
 			ResultSet rs = sendQuery("SELECT count(*) FROM "+TABLE[NUTZER_PROJEKT]+","+TABLE[PROJEKT]
 						+" WHERE "+DB[NUTZER_PROJEKT][NUTZER_ID][0]+"="+nutzer_id
-						+" AND "+DB[NUTZER_PROJEKT][MN_PROJEKT_ID][0]+"="+DB[PROJEKT][ID][0]
+						+" AND "+DB[NUTZER_PROJEKT][MN_PROJEKT_ID][0]+"="+TABLE[PROJEKT]+"."+DB[PROJEKT][ID][0]
 						+" AND "+TABLE[PROJEKT]+"."+DB[PROJEKT][AKZEPTIERT][0]+"="+akzeptiert
 						+" AND "+TABLE[PROJEKT]+"."+DB[PROJEKT][PROJEKT_LEHRERCHAT][0]+"="+lehrerchat,true);
 			rs.next();
@@ -2962,7 +2964,7 @@ public class MySQLManager {
 	
 	Gruppe getProjektGruppe(int projektID) {
 		try {
-			ResultSet rs = sendQuery("SELECT "+DB[GRUPPE][ID][0]+","+DB[GRUPPE][NAME][0]+" FROM "+TABLE[GRUPPE]+" WHERE "+DB[GRUPPE][ID][0]+" = (SELECT "+DB[PROJEKT_GRUPPE][MN_GRUPPE_ID][0]+" FROM "+TABLE[PROJEKT_GRUPPE]+" WHERE "+DB[PROJEKT_GRUPPE][MN_PROJEKT_ID][0]+"="+projektID+" LIMIT 1)",true);
+			ResultSet rs = sendQuery("SELECT "+DB[GRUPPE][ID][0]+","+DB[GRUPPE][NAME][0]+" FROM "+TABLE[GRUPPE]+" WHERE "+TABLE[GRUPPE]+"."+DB[GRUPPE][ID][0]+" = (SELECT "+DB[PROJEKT_GRUPPE][MN_GRUPPE_ID][0]+" FROM "+TABLE[PROJEKT_GRUPPE]+" WHERE "+DB[PROJEKT_GRUPPE][MN_PROJEKT_ID][0]+"="+projektID+" LIMIT 1)",true);
 			
 			Gruppe gruppe = null;
 			if(rs.next()) {
@@ -3006,7 +3008,7 @@ public class MySQLManager {
 	
 	void addProjektGruppe(int projektID, int gruppeID) {
 		try {
-			sendQuery("INSERT INTO "+TABLE[PROJEKT_GRUPPE]+" VALUES("+projektID+","+gruppeID+")",false);
+			sendQuery("INSERT INTO "+TABLE[PROJEKT_GRUPPE]+"("+DB[PROJEKT_GRUPPE][MN_PROJEKT_ID][0]+","+DB[PROJEKT_GRUPPE][MN_GRUPPE_ID][0]+") VALUES("+projektID+","+gruppeID+")",false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
