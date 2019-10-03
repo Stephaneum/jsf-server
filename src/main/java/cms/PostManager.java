@@ -1,9 +1,14 @@
 package cms;
 
+import sitzung.Sitzung;
+import tools.Jwt;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
 @ViewScoped
 @ManagedBean
@@ -92,6 +97,11 @@ public class PostManager {
 	
 	public void setEditUnapproved(EditUnapproved editUnapproved) {
 		this.editUnapproved = editUnapproved;
+	}
+
+	public void toBeta() throws IOException {
+		String token = Jwt.generateToken(Sitzung.getNutzer().getNutzer_id());
+		FacesContext.getCurrentInstance().getExternalContext().redirect("beitrag-manager?key=" + token);
 	}
 
 }

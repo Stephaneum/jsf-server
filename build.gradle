@@ -47,6 +47,11 @@ dependencies {
             "org.apache.tomcat.embed:tomcat-embed-logging-juli:8.5.2",
             "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 
+    // Jwt
+    implementation "io.jsonwebtoken:jjwt-api:0.10.7"
+    runtime "io.jsonwebtoken:jjwt-impl:0.10.7"
+    runtime "io.jsonwebtoken:jjwt-jackson:0.10.7"
+
     // fix for java 9+
     implementation "javax.xml.bind:jaxb-api:2.2.11"
     implementation "com.sun.xml.bind:jaxb-core:2.2.11"
