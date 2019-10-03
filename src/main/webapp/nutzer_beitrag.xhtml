@@ -90,7 +90,7 @@
 				<p:panel style="margin-bottom: 40px">
 					<div style="text-align: center; margin: 30px">
 						<span style="margin-right: 20px">Jetzt die neue Beta ausprobieren:</span>
-						<p:commandButton value="Hier klicken" action="#{postManager.toBeta}" />
+						<p:commandButton value="Hier klicken" action="#{postManager.toBeta}" onstart="PF('overlayBeta').show()" />
 					</div>
 				</p:panel>
 				
@@ -1876,6 +1876,11 @@
 							
 						</h:form>
 						<br/><br/><br/>
+					</p:dialog>
+
+					<p:dialog widgetVar="overlayBeta" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+						<h2 class="title" style="text-align:center">Beta wird geöffnet</h2>
+						<p:graphicImage url="resources/img/ajax-loader.gif" />
 					</p:dialog>
 					
 					<p:dialog widgetVar="overlayLoad" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
