@@ -29,7 +29,7 @@ public class Konfig {
 	final static private String PREFIX_TITLE = "Stephaneum: ";
 	final static private String FILE_CSS = "style_v13.css"; //wird von xhtml-Dateien verwiesen
 	final static private String FILE_CSS_MATERIAL = "style_material_v2.css"; //wird von xhtml-Dateien verwiesen
-	final static private String STAND = "3.Oktober 2019"; //informationen
+	final static private String STAND = "4.Oktober 2019"; //informationen
 	final static public boolean RESTORE_VERSION = false;
 	
 	//Version

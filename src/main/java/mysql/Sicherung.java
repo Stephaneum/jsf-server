@@ -343,7 +343,6 @@ public class Sicherung {
             	
             	Datenbank.updateDatabase(); //enthält Datenbank.syncVariables
             	ViewCounter.forceSync();
-            	Statistiken.initData();
             	TopMenu.triggerChanged();
             	return null;
             } else {

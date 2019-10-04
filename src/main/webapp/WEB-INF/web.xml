@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-	<display-name>Stephaneum700 (03.10.2019)</display-name>
+	<display-name>Stephaneum700 (04.10.2019)</display-name>
 	
 	<welcome-file-list>
 		<welcome-file>home.xhtml</welcome-file>
@@ -11,90 +11,10 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
-	<servlet>
-		<servlet-name>StaticServlet</servlet-name>
-		<servlet-class>servlet.StaticServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>ImageServlet</servlet-name>
-		<servlet-class>servlet.ImageServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>PublicFileServlet</servlet-name>
-		<servlet-class>servlet.PublicFileServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>PreviewServlet</servlet-name>
-		<servlet-class>servlet.PreviewServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>SliderServlet</servlet-name>
-		<servlet-class>servlet.SliderServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>VertretungServlet</servlet-name>
-		<servlet-class>servlet.VertretungServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>RobotsServlet</servlet-name>
-		<servlet-class>servlet.RobotsServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>SitemapServlet</servlet-name>
-		<servlet-class>servlet.SitemapServlet</servlet-class>
-	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>StaticServlet</servlet-name>
-		<url-pattern>/s/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>ImageServlet</servlet-name>
-		<url-pattern>/images/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>PublicFileServlet</servlet-name>
-		<url-pattern>/public/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>PreviewServlet</servlet-name>
-		<url-pattern>/preview/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>SliderServlet</servlet-name>
-		<url-pattern>/slider/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>VertretungServlet</servlet-name>
-		<url-pattern>/vertretungsplan.pdf</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>RobotsServlet</servlet-name>
-		<url-pattern>/robots.txt</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>SitemapServlet</servlet-name>
-		<url-pattern>/sitemap.xml</url-pattern>
 	</servlet-mapping>
 	
 	<context-param>

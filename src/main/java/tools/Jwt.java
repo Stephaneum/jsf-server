@@ -1,5 +1,7 @@
 package tools;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -27,6 +29,19 @@ public class Jwt {
                 .setExpiration(validity)
                 .signWith(key)
                 .compact();
+    }
+
+
+    public static Claims getData(String token) {
+        if(isValid(token))
+            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+        else
+            return null;
+    }
+
+    public static boolean isValid(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        return !claims.getBody().getExpiration().before(new Date());
     }
 
 }

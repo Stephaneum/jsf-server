@@ -352,7 +352,7 @@ public class Datenbank {
 				Konsole.antwort("Verbindung zur MySQL-Datenbank hergestellt.");
 				
 				if(existDatabase() && !needUpdate()) {
-					syncVariables();
+					syncAll();
 				}
 			} else {
 				mysql = null;
@@ -361,44 +361,58 @@ public class Datenbank {
 		}
 	}
 	
-	public static void syncVariables() {
+	public static void syncAll() {
 		mysql.deleteCodePasswortVergessen();
 		
-		speicherort = mysql.getKonfig(MySQLManager.KONFIG_SPEICHERORT);
-		backupDir = mysql.getKonfig(MySQLManager.KONFIG_BACKUP_DIR);
+		syncSpecialText();
+		syncVariables();
+		syncPlan();
+
+		Statistiken.initData();
+		updateStaticFiles();
+	}
+
+	public static void syncSpecialText() {
 		kontakt = mysql.getKonfig(MySQLManager.KONFIG_STRING_KONTAKT);
 		impressum = mysql.getKonfig(MySQLManager.KONFIG_STRING_IMPRESSUM);
 		copyright = mysql.getKonfig(MySQLManager.KONFIG_STRING_BOTTOM);
 		entwicklerInfo = mysql.getKonfig(MySQLManager.KONFIG_STRING_ENTWICKLER);
 		liveTicker = mysql.getKonfig(MySQLManager.KONFIG_STRING_TICKER);
-		vertretungInfo = mysql.getKonfig(MySQLManager.KONFIG_STRING_VERTRETUNG_INFO);
-		
+
 		history = mysql.getKonfig(MySQLManager.KONFIG_STRING_HISTORY);
 		historyLink = history != null && history.startsWith("http");
-		
+
 		euSa = mysql.getKonfig(MySQLManager.KONFIG_STRING_EU_SA);
 		euSaLink = euSa != null && euSa.startsWith("http");
-		
+
 		termine = mysql.getKonfig(MySQLManager.KONFIG_TERMINE);
 		terminePrepared = prepareTermine(termine);
+
 		koop = mysql.getKonfig(MySQLManager.KONFIG_KOOP);
 		koopList = calcKoopList(koop);
 		koopURL = mysql.getKonfig(MySQLManager.KONFIG_KOOP_URL);
-		
-		vertretung = mysql.getKonfig(MySQLManager.KONFIG_STRING_VERTRETUNG);
-		
-		mergeAktuelles = mysql.getKonfigBoolean(MySQLManager.KONFIG_MERGE_AKTUELLES);
-		pictureSize = mysql.getKonfigInt(MySQLManager.KONFIG_PICTURE_SIZE);
-		showSysteme = mysql.getKonfigBoolean(MySQLManager.KONFIG_SHOW_SYSTEM);
-		showSoftware = mysql.getKonfigBoolean(MySQLManager.KONFIG_SHOW_SOFTWARE);
-		showCloud = mysql.getKonfigBoolean(MySQLManager.KONFIG_SHOW_CLOUD);
-		redirectPort = mysql.getKonfigBoolean(MySQLManager.KONFIG_REDIRECT_PORT);
+	}
+
+	public static void syncVariables() {
 		defaultGruppeID = mysql.getKonfigInt(MySQLManager.KONFIG_DEFAULT_GRUPPE_ID);
 		if(defaultGruppeID == -1) {
 			setDefaultGruppeID(mysql.getFirstGruppeID());
 		}
-		Statistiken.initData();
-		updateStaticFiles();
+		mergeAktuelles = mysql.getKonfigBoolean(MySQLManager.KONFIG_MERGE_AKTUELLES);
+
+		speicherort = mysql.getKonfig(MySQLManager.KONFIG_SPEICHERORT);
+		backupDir = mysql.getKonfig(MySQLManager.KONFIG_BACKUP_DIR);
+		pictureSize = mysql.getKonfigInt(MySQLManager.KONFIG_PICTURE_SIZE);
+		redirectPort = mysql.getKonfigBoolean(MySQLManager.KONFIG_REDIRECT_PORT);
+
+		showSysteme = mysql.getKonfigBoolean(MySQLManager.KONFIG_SHOW_SYSTEM);
+		showSoftware = mysql.getKonfigBoolean(MySQLManager.KONFIG_SHOW_SOFTWARE);
+		showCloud = mysql.getKonfigBoolean(MySQLManager.KONFIG_SHOW_CLOUD);
+	}
+
+	public static void syncPlan() {
+		vertretung = mysql.getKonfig(MySQLManager.KONFIG_STRING_VERTRETUNG);
+		vertretungInfo = mysql.getKonfig(MySQLManager.KONFIG_STRING_VERTRETUNG_INFO);
 	}
 	
 	static public void updateDatabase() {
@@ -407,7 +421,7 @@ public class Datenbank {
 			Konsole.noConnection();
 		} else {
 			mysql.updateDatabase();
-			syncVariables();
+			syncAll();
 		}
 	}
 	

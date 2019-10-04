@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import objects.Datei;
 import objects.StaticFile;
 import tools.URLManager;
 
+@WebServlet("/s/*")
 public class StaticServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
