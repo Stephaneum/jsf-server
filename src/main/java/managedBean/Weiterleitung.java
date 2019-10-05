@@ -1,6 +1,7 @@
 package managedBean;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
@@ -10,6 +11,7 @@ import javax.faces.context.FacesContext;
 import mysql.Datenbank;
 import objects.Nutzer;
 import sitzung.Sitzung;
+import tools.Jwt;
 import tools.URLManager;
 
 @ApplicationScoped
@@ -96,6 +98,22 @@ public class Weiterleitung {
 			Konsole.antwort("Noch nicht eingeloggt! Leite nach login.xhtml weiter.");
 			return URLManager.LOGIN; //Weiterleiten
 		} else {
+			return null;
+		}
+	}
+
+	public String beitragManager() throws IOException {
+		if(!Sitzung.isLoggedIn()) {
+			Konsole.antwort("Noch nicht eingeloggt! Leite nach login.xhtml weiter.");
+			return URLManager.LOGIN; //Weiterleiten
+		} else {
+			Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String oldParam = parameterMap.get("old");
+			if(oldParam == null) {
+				// redirect if not ?old
+				String token = Jwt.generateToken(Sitzung.getNutzer().getNutzer_id());
+				FacesContext.getCurrentInstance().getExternalContext().redirect("beitrag-manager?key=" + token);
+			}
 			return null;
 		}
 	}

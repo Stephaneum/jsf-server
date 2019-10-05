@@ -44,7 +44,7 @@ public class BeitragOpen {
 		
 		//Beitrag aus dem Parameter "id" entnehmen
 		try {
-			Map<String, String> parameterMap = (Map<String, String>) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			String paramID = parameterMap.get("id");
 			String paramSearch = parameterMap.get("suche");
 			
