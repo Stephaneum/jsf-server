@@ -131,5 +131,19 @@ public class TopMenu {
 	public boolean isVertretungsplan() {
 		return vertretungsplan;
 	}
+
+	public String getUrl(Gruppe gruppe) {
+		if(gruppe.getLink() != null)
+			return gruppe.getLink();
+		else
+			return "./home.xhtml?id="+gruppe.getGruppe_id();
+	}
+
+	public String getTarget(Gruppe gruppe) {
+		if(gruppe.getLink() != null)
+			return "_blank";
+		else
+			return "_self";
+	}
 }
 
