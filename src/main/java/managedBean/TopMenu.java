@@ -136,7 +136,7 @@ public class TopMenu {
 		if(gruppe.getLink() != null)
 			return gruppe.getLink();
 		else
-			return "./home.xhtml?id="+gruppe.getGruppe_id();
+			return "/home.xhtml?id="+gruppe.getGruppe_id();
 	}
 
 	public String getTarget(Gruppe gruppe) {

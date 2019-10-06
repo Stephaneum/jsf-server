@@ -127,7 +127,7 @@
 				<a href="#" data-target="sidenav" class="sidenav-trigger hide-on-large-only">
 					<i class="material-icons" style="color: #1b5e20">menu</i>
 				</a>
-				<a href="./home.xhtml" class="brand-logo">
+				<a href="/home.xhtml" class="brand-logo">
 					<h:graphicImage id="logo-steph" value="/resources/img/#{themeService.logo}" style="height:50px;margin-top:5px;margin-left:10px" />
 				</a>
 				<ul class="right hide-on-med-and-down">
@@ -204,32 +204,32 @@
 							<a id="internal-btn">Intern</a>
 							<ul id="internal-menu" class="z-depth-1" style="z-index: 200">
 								<h:panelGroup rendered="#{topMenu.admin}">
-									<li><a href="admin_konfig.xhtml"><span><i class="material-icons">build</i>Konfiguration</span></a></li>
-									<li><a href="admin_static.xhtml"><span><i class="material-icons">brush</i>Benutzerdefinierte Seiten</span></a></li>
-									<li><a href="admin_rubriken.xhtml"><span><i class="material-icons">bookmark</i>Rubriken</span></a></li>
-									<li><a href="admin_backup.xhtml"><span><i class="material-icons">save</i>Backup</span></a></li>
-									<li><a href="admin_zugangscode.xhtml"><span><i class="material-icons">vpn_key</i>Zugangscodes</span></a></li>
-									<li><a href="admin_nutzer.xhtml"><span><i class="material-icons">people</i>Nutzer</span></a></li>
-									<li><a href="admin_logs.xhtml"><span><i class="material-icons">history</i>Logbuch</span></a></li>
+									<li><a href="/admin_konfig.xhtml"><span><i class="material-icons">build</i>Konfiguration</span></a></li>
+									<li><a href="/admin_static.xhtml"><span><i class="material-icons">brush</i>Benutzerdefinierte Seiten</span></a></li>
+									<li><a href="/admin_rubriken.xhtml"><span><i class="material-icons">bookmark</i>Rubriken</span></a></li>
+									<li><a href="/admin_backup.xhtml"><span><i class="material-icons">save</i>Backup</span></a></li>
+									<li><a href="/admin_zugangscode.xhtml"><span><i class="material-icons">vpn_key</i>Zugangscodes</span></a></li>
+									<li><a href="/admin_nutzer.xhtml"><span><i class="material-icons">people</i>Nutzer</span></a></li>
+									<li><a href="/admin_logs.xhtml"><span><i class="material-icons">history</i>Logbuch</span></a></li>
 								</h:panelGroup>
 								<li class="internal-divider" />
 								<h:panelGroup rendered="#{topMenu.admin or topMenu.vertretungsplan}">
-									<li><a href="konfig_vertretung.xhtml"><span><i class="material-icons">description</i>Vertretungsplan</span></a></li>
+									<li><a href="/konfig_vertretung.xhtml"><span><i class="material-icons">description</i>Vertretungsplan</span></a></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{topMenu.rubrikErstellen}">
-									<li><a href="nutzer_rubrik.xhtml"><span><i class="material-icons">bookmark</i>Rubrik</span></a></li>
+									<li><a href="/nutzer_rubrik.xhtml"><span><i class="material-icons">bookmark</i>Rubrik</span></a></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{topMenu.beitragAnzahl eq 0}">
-									<li><a href="beitrag-manager"><span><i class="material-icons">edit</i>Beiträge</span></a></li>
+									<li><a href="/beitrag-manager"><span><i class="material-icons">edit</i>Beiträge</span></a></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{topMenu.beitragAnzahl ne 0}">
-									<li><a href="beitrag-manager"><span><i class="material-icons">edit</i>Beiträge (#{topMenu.beitragAnzahl})</span></a></li>
+									<li><a href="/beitrag-manager"><span><i class="material-icons">edit</i>Beiträge (#{topMenu.beitragAnzahl})</span></a></li>
 								</h:panelGroup>
-								<li><a href="klasse.xhtml"><span><i class="material-icons">school</i>Schulklasse</span></a></li>
-								<li><a href="projekt_all.xhtml"><span><i class="material-icons">flag</i>Projekte</span></a></li>
+								<li><a href="/klasse.xhtml"><span><i class="material-icons">school</i>Schulklasse</span></a></li>
+								<li><a href="/projekt_all.xhtml"><span><i class="material-icons">flag</i>Projekte</span></a></li>
 								<li class="internal-divider" />
-								<li><a href="nutzer_dateien.xhtml"><span><i class="material-icons">folder</i>Dateien</span></a></li>
-								<li><a href="nutzer_account.xhtml"><span><i class="material-icons">account_circle</i>Account</span></a></li>
+								<li><a href="/nutzer_dateien.xhtml"><span><i class="material-icons">folder</i>Dateien</span></a></li>
+								<li><a href="/nutzer_account.xhtml"><span><i class="material-icons">account_circle</i>Account</span></a></li>
 							</ul>
 							<div id="internal-menu-account" style="position: absolute; z-index: 1; top: 70px; left: -190px; display: none; overflow: hidden;text-align: center; width: 200px; height: 160px; background-color: #f1f8e9; color: #1b5e20; line-height: normal;" class="z-depth-1">
 								<i style="font-size: 4em; margin-top: 10px" class="material-icons">person</i>
@@ -238,7 +238,7 @@
 							</div>
 						</li>
 						<li>
-							<a href="logout.xhtml" class="waves-effect waves-dark btn" style="background-color: #1b5e20">
+							<a href="/logout.xhtml" class="waves-effect waves-dark btn" style="background-color: #1b5e20">
 								Abmelden
 								<i class="material-icons right">exit_to_app</i>
 							</a>
@@ -246,7 +246,7 @@
 					</h:panelGroup>
 					<h:panelGroup rendered="#{not konfig.loggedIn}">
 						<li>
-							<a href="login.xhtml" class="waves-effect waves-dark btn" style="background-color: #1b5e20">
+							<a href="/login.xhtml" class="waves-effect waves-dark btn" style="background-color: #1b5e20">
 								Login
 								<i class="material-icons right">exit_to_app</i>
 							</a>
