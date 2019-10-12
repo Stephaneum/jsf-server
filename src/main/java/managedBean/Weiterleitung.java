@@ -119,6 +119,23 @@ public class Weiterleitung {
 		}
 	}
 
+	public String logs() throws IOException {
+		Nutzer nutzer = Sitzung.getNutzer();
+		if(nutzer == null || nutzer.getRang() != Nutzer.RANG_ADMIN) {
+			Konsole.antwort("Noch nicht eingeloggt! Leite nach login.xhtml weiter.");
+			return URLManager.LOGIN; //Weiterleiten
+		} else {
+			Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String oldParam = parameterMap.get("old");
+			if(oldParam == null) {
+				// redirect if not ?old
+				String token = Jwt.generateToken(Sitzung.getNutzer().getNutzer_id());
+				FacesContext.getCurrentInstance().getExternalContext().redirect("logs?key=" + token);
+			}
+			return null;
+		}
+	}
+
 	public String beitragManager() throws IOException {
 		if(!Sitzung.isLoggedIn()) {
 			Konsole.antwort("Noch nicht eingeloggt! Leite nach login.xhtml weiter.");
