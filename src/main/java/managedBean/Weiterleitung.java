@@ -102,6 +102,23 @@ public class Weiterleitung {
 		}
 	}
 
+	public String codes() throws IOException {
+		Nutzer nutzer = Sitzung.getNutzer();
+		if(nutzer == null || nutzer.getRang() != Nutzer.RANG_ADMIN) {
+			Konsole.antwort("Noch nicht eingeloggt! Leite nach login.xhtml weiter.");
+			return URLManager.LOGIN; //Weiterleiten
+		} else {
+			Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String oldParam = parameterMap.get("old");
+			if(oldParam == null) {
+				// redirect if not ?old
+				String token = Jwt.generateToken(Sitzung.getNutzer().getNutzer_id());
+				FacesContext.getCurrentInstance().getExternalContext().redirect("codes?key=" + token);
+			}
+			return null;
+		}
+	}
+
 	public String planManager() throws IOException {
 		Nutzer nutzer = Sitzung.getNutzer();
 		if(nutzer == null || nutzer.getRang() == Nutzer.RANG_GAST_NO_LOGIN || (nutzer.getRang() != Nutzer.RANG_ADMIN && !Datenbank.isVertretung(nutzer.getNutzer_id()))) {
