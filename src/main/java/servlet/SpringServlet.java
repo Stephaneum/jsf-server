@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.logging.Logger;
 
-@WebServlet("/spring")
+@WebServlet("/event")
 public class SpringServlet extends HttpServlet {
 
 	private static final Logger logger = Logger.getLogger(SpringServlet.class.getName());
