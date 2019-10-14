@@ -10,9 +10,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.logging.Logger;
 
 @WebServlet("/spring")
 public class SpringServlet extends HttpServlet {
+
+	private static final Logger logger = Logger.getLogger(SpringServlet.class.getName());
 	
 	/*
 	 * reacts to spring events
@@ -27,7 +30,7 @@ public class SpringServlet extends HttpServlet {
 			if(data != null) {
 				String event = (String) data.get("event");
 				if(event != null) {
-					System.out.println("Received "+event);
+					logger.severe("Received "+event);
 					switch(event) {
 						case "SYNC_ALL":
 							Datenbank.syncAll();
@@ -47,11 +50,11 @@ public class SpringServlet extends HttpServlet {
 							Datenbank.syncPlan();
 							break;
 						default:
-							System.err.println("ERROR: unknown event type");
+							logger.severe("ERROR: unknown event type");
 					}
 				}
 			} else {
-				System.err.println("ERROR: jwt error");
+				logger.severe("ERROR: jwt error");
 			}
 		}
 	}
