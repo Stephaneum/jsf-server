@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<body>
+	<ui:composition>
+
+		<style>
+			@media only screen and (max-width: 600px) {
+				#privacy-popup {
+					height:180px;
+				}
+			}
+
+			@media only screen and (min-width: 601px) and (max-width: 1200px) {
+				#privacy-popup {
+					height:80px;
+				}
+			}
+
+			@media only screen and (min-width: 1201px) {
+				#privacy-popup {
+					height:60px;
+				}
+			}
+		</style>
+
+		<script type="text/javascript">
+			//<![CDATA[
+			function showPrivacyPopup() {
+				var hideButton = '<a onclick="acceptPrivacyPolicy()" class="waves-effect waves-light btn green darken-4" style="margin-left: 15px; width: 100px">OK</a>';
+
+				document.body.innerHTML += '<div id="privacy-popup" class="z-depth-2 light-green lighten-4" style="position:fixed;width:80%;left: 10vw; bottom: -100px; z-index:1000; padding: 20px; display: flex; align-items: center; justify-content: space-between">' +
+						'<div style="display: flex; align-items: center">' +
+							'<i class="material-icons" style="font-size: 30px; margin-right: 10px">info</i>' +
+							'<span>Mit dem Zugang akzeptieren Sie die <a href="impressum.xhtml" target="_blank" class="green-text text-darken-4" style="text-decoration: underline">datenrechtlichen Bestimmungen</a> sowie die Verwendung von Cookies auf unserer Webplattform.</span>' +
+						'</div>' + hideButton + '</div>';
+
+				$( "#privacy-popup" ).animate({
+					bottom: '20px'
+				}, 1000);
+			}
+
+			function acceptPrivacyPolicy() {
+				document.getElementById('privacy-popup').style.display = 'none';
+				document.cookie = 'privacyAccepted=1;path=/';
+			}
+
+			$( document ).ready(function() {
+				if(document.cookie.indexOf('privacyAccepted=1') === -1) {
+					setTimeout(showPrivacyPopup, 1000);
+				}
+			});
+
+			// ]]>
+		</script>
+
+	</ui:composition>
+</body>
+</html>
