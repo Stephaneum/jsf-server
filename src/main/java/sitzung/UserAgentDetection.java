@@ -83,7 +83,9 @@ public class UserAgentDetection {
 	}
 	
 	static public boolean isBot(String userAgent) {
-		return userAgent.contains("googlebot") ||
+		return userAgent.contains("liebaofast") ||
+				userAgent.contains("mb2345browser") ||
+				userAgent.contains("googlebot") ||
 				userAgent.contains("bingbot") ||
 				userAgent.contains("dotbot") ||
 				userAgent.contains("mj12bot") ||
