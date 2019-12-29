@@ -13,6 +13,7 @@ public class Timeformats {
 	final static public DateTimeFormatter backup = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
 	final static public DateTimeFormatter dateFull = DateTimeFormatter.ofPattern("EEEE, dd.MMMM yyyy", Locale.GERMANY);
 	final static public DateTimeFormatter complete = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm:ss");
+	final static public DateTimeFormatter iso = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
 	/**
 	 *  <h1>Sun, 25 Mar 2018 21:54:03 GMT</h1>

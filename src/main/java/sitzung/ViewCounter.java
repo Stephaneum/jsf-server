@@ -2,9 +2,8 @@ package sitzung;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +40,8 @@ public class ViewCounter implements Serializable{
 	
 	//Zugriffverlauf
 	static private String[] zugriffVerlauf = new String[100];
+
+	private static final Map<String, String> log = new HashMap<>();
 	
 	public static void forceSync() {
 		synchronizedWithMySQL = false;
@@ -87,16 +88,21 @@ public class ViewCounter implements Serializable{
 			for(int i = zugriffVerlauf.length-1; i >= 1; i--) {
 				zugriffVerlauf[i] = zugriffVerlauf[i-1];
 			}
-			
+
+			LocalDateTime now = LocalDateTime.now();
 			if(agent == null || UserAgentDetection.isBot(agent)) {
-				zugriffVerlauf[0] = Timeformats.completeNoSeconds().format(Calendar.getInstance().getTime())+" [IP / " + currentIP + "] [ ~ BOT ~ ] --- " + agent;
+				String content = "[IP / " + currentIP + "] [ ~ BOT ~ ] --- " + agent;
+				zugriffVerlauf[0] = now.format(Timeformats.complete)+ " " + content;
+				log.put(now.format(Timeformats.iso), content);
 				return;
 			} else {
 				int browser = UserAgentDetection.getBrowser(agent);
 				int os = UserAgentDetection.getOS(agent);
 				counterBrowser[browser]++;
 				counterOS[os]++;
-				zugriffVerlauf[0] = Timeformats.completeNoSeconds().format(Calendar.getInstance().getTime())+" [IP / " + currentIP + "] ["+UserAgentDetection.OS[os]+" / "+UserAgentDetection.BROWSERS[browser]+"] --- " + agent;
+				String content = "[IP / " + currentIP + "] ["+UserAgentDetection.OS[os]+" / "+UserAgentDetection.BROWSERS[browser]+"] --- " + agent;
+				zugriffVerlauf[0] = now.format(Timeformats.complete)+ " " + content;
+				log.put(now.format(Timeformats.iso), content);
 			}
 				
 			//jetzt kommen die Stats: Tage, Stunden
@@ -249,4 +255,7 @@ public class ViewCounter implements Serializable{
 		return zugriffVerlauf;
 	}
 
+	public static Map<String, String> getLog() {
+		return log;
+	}
 }
