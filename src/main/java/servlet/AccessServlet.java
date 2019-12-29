@@ -30,10 +30,9 @@ public class AccessServlet extends HttpServlet {
             for (Map.Entry<String, String> entry : log.entrySet()) {
                 if(!first)
                     builder.append(',');
-                builder.append('{');
-                builder.append("\"time\":\"");
+                builder.append("{\"");
                 builder.append(entry.getKey());
-                builder.append("\",\"request\":\"");
+                builder.append("\":\"");
                 builder.append(entry.getValue());
                 builder.append("\"}");
 

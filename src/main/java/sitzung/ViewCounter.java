@@ -41,7 +41,7 @@ public class ViewCounter implements Serializable{
 	//Zugriffverlauf
 	static private String[] zugriffVerlauf = new String[100];
 
-	private static final Map<String, String> log = new HashMap<>();
+	private static final Map<String, String> log = new LinkedHashMap<>();
 	
 	public static void forceSync() {
 		synchronizedWithMySQL = false;
