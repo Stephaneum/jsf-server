@@ -37,7 +37,6 @@ import objects.Projekt;
 import objects.Rubrik;
 import objects.Slide;
 import objects.StaticFile;
-import servlet.StaticServlet;
 import sitzung.Count;
 import sitzung.Sitzung;
 import sitzung.UserAgentDetection;
@@ -369,7 +368,6 @@ public class Datenbank {
 		syncPlan();
 
 		Statistiken.initData();
-		updateStaticFiles();
 	}
 
 	public static void syncSpecialText() {
@@ -2683,101 +2681,5 @@ public class Datenbank {
 			Konsole.noConnection();
 		} else
 			mysql.deleteSlide(index);
-	}
-	
-	//--------------- Static Files ---------------------------------------------------
-	
-	public static ArrayList<StaticFile> getStaticFiles() {
-		return staticFiles;
-	}
-	
-	public static StaticFile getStaticFile(String path) {
-		if(staticFiles == null)
-			return null;
-		
-		for(StaticFile file : staticFiles) {
-			if(file.getPath().equals(path))
-				return file;
-		}
-		
-		return null;
-	}
-	
-	public static void updateStaticFiles() {
-		
-		String staticPath = speicherort+"/"+StaticServlet.STATIC_FOLDER_NAME;
-		new File(staticPath).mkdirs(); // create missing folders
-		
-		int staticPathLength = staticPath.length()+1; // include last slash
-		ArrayList<File> files = new ArrayList<>();
-		listf(staticPath, files); //read files
-		ArrayList<String> filenames = new ArrayList<>();
-		
-		for(File file : files) {
-			if(file.getAbsolutePath().endsWith("html") || file.getAbsolutePath().endsWith("htm"))
-				filenames.add(file.getAbsolutePath().substring(staticPathLength).replace("\\", "/"));
-		}
-		
-		staticFiles = mysql.getStaticFiles(); // e.g. "folder/site.html"
-		ArrayList<String> database = new ArrayList<>();
-		
-		// check if does not exist anymore
-		for(StaticFile file : staticFiles) {
-			if(!filenames.contains(file.getPath())) {
-				//remove, file does not exist anymore
-				mysql.deleteStaticFile(file.getPath());
-				System.out.println("static:     [DELETE] "+file.getPath()+" does not exist anymore");
-			} else {
-				database.add(file.getPath());
-			}
-		}
-		
-		// check for new files
-		for(String name : filenames) {
-			if(!database.contains(name)) {
-				addStaticFile(name, StaticFile.MODE_MIDDLE);
-				System.out.println("static:     [ADD] "+name);
-			}
-		}
-		
-		staticFiles = mysql.getStaticFiles();
-	}
-	
-	private static void listf(String directoryName, ArrayList<File> files) {
-		
-		File directory = new File(directoryName);
-		
-		// Get all files from a directory.
-		File[] fList = directory.listFiles();
-		if(fList != null) {
-			for (File file : fList) {
-				if (file.isFile()) {
-					files.add(file);
-				} else if (file.isDirectory()) {
-					listf(file.getAbsolutePath(), files);
-				}
-			}
-		}
-	}
-	
-	public static void addStaticFile(String path, int mode) {
-		if(mysql == null) {
-			Konsole.noConnection();
-		} else
-			mysql.addStaticFile(path, mode);
-	}
-	
-	public static void editStaticFile(String path, int mode) {
-		if(mysql == null) {
-			Konsole.noConnection();
-		} else
-			mysql.editStaticFile(path, mode);
-	}
-	
-	public static void deleteStaticFile(String path) {
-		if(mysql == null) {
-			Konsole.noConnection();
-		} else
-			mysql.deleteStaticFile(path);
 	}
 }

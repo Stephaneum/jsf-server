@@ -5530,61 +5530,6 @@ public class MySQLManager {
 		}
 	}
 	
-	//--------------- Static Files ---------------------------------------------------
-	
-	public ArrayList<StaticFile> getStaticFiles() {
-		try {
-			ResultSet rs = sendQuery("SELECT * FROM "+TABLE[STATIC_FILES], true);
-			ArrayList<StaticFile> list = new ArrayList<>(6);
-			while(rs.next()) {
-				StaticFile file = new StaticFile(rs.getString(1), rs.getInt(2));
-				list.add(file);
-			}
-			return list;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	
-	public void addStaticFile(String path, int mode) {
-		try {
-			
-			Object[] input = {path, mode};
-			int[] type = {TYPE_STRING, TYPE_INT};
-			
-			sendQueryPrepared("INSERT INTO "+TABLE[STATIC_FILES]+"("+DB[STATIC_FILES][STATIC_PATH][0]+","+
-															DB[STATIC_FILES][STATIC_MODE][0]+") VALUES(?,?)", input, type, false);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void editStaticFile(String path, int mode) {
-		try {
-			
-			Object[] input = {mode, path};
-			int[] type = {TYPE_INT, TYPE_STRING};
-			
-			sendQueryPrepared("UPDATE "+TABLE[STATIC_FILES]+" SET "+ DB[STATIC_FILES][STATIC_MODE][0]+" = ? WHERE "+DB[STATIC_FILES][STATIC_PATH][0]+" = ?", input, type, false);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void deleteStaticFile(String path) {
-		try {
-			
-			Object[] input = {path};
-			int[] type = {TYPE_STRING};
-			
-			sendQueryPrepared("DELETE FROM "+TABLE[STATIC_FILES]+" WHERE "+DB[STATIC_FILES][STATIC_PATH][0]+"=?", input, type, false);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	//Bei großen Datenbankanfragen eignet sich ein "Zwischenspeicher", damit z.B. ID -> Nutzer nicht so häufig abgefragt wird
 	//length sollte so klein sein wie möglich, aber muss den Extremfall einbeziehen
 	static private class Zwischenspeicher<T> {
