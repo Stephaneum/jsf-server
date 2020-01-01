@@ -83,11 +83,6 @@ public class SideMenu {
                 itemRubrik.setIcon("ui-icon-bookmark");
                 submenuAdmin.addElement(itemRubrik);
                 
-                DefaultMenuItem itemBackup = new DefaultMenuItem("Backup");
-                itemBackup.setHref("/"+URLManager.BACKUP+".xhtml");
-                itemBackup.setIcon("ui-icon-suitcase");
-                submenuAdmin.addElement(itemBackup);
-                
                 DefaultMenuItem itemCodes = new DefaultMenuItem("Zugangscodes");
                 itemCodes.setHref("/"+URLManager.ZUGANGSCODE+".xhtml");
                 itemCodes.setIcon("ui-icon-key");
