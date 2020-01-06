@@ -39,7 +39,7 @@
 
 			function acceptPrivacyPolicy() {
 				document.getElementById('privacy-popup').style.display = 'none';
-				document.cookie = 'privacyAccepted=1;path=/';
+				document.cookie = 'privacyAccepted=1;path=/;Max-Age=604800'; // 1 week
 			}
 
 			$( document ).ready(function() {
