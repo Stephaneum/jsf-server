@@ -2445,24 +2445,9 @@ public class Datenbank {
 	
 	//--------------- Logs ---------------------------------------------------
 	
-	static public int getLogsAmount() {
-		Konsole.method("Datenbank.getLogsAmount()");
-		return mysql.getLogsAmount();
-	}
-	
-	static public Ereignis[] getLogs(boolean[] showEreignis, int anzahl) {
-		Konsole.method("Datenbank.getLogs()");
-		return mysql.getLogs(showEreignis, anzahl);
-	}
-	
 	static public void addLog(int typ, String ereignis) {
 		Konsole.method("Datenbank.addLog()");
 		mysql.addLog(ereignis, typ);
-	}
-	
-	static public void clearLog(int days) {
-		Konsole.method("Datenbank.clearLog("+days+")");
-		mysql.clearLog(days);
 	}
 	
 	//--------------- Stats ---------------------------------------------------
@@ -2569,7 +2554,8 @@ public class Datenbank {
 	
 	/**
 	 * Polling
-	 * @param nutzerProjektID falls lehrerchat == true, dann nutzerID nehmen, ansonsten projektID. nutzerID -> damit Zeitstempel aktualisiert werden kann
+	 * @param nutzerID NutzerID, damit der Zeitstempel gesetzt werden kann
+	 * @param projektID chat im Projekt
 	 * @param lehrerchat wird gerade aus dem Lehrerchat gepollt?
 	 * @return Anzahl der Nachrichten
 	 */

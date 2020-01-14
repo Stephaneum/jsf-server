@@ -4974,90 +4974,11 @@ public class MySQLManager {
 	
 	//--------------- Logs ---------------------------------------------------
 	
-	int getLogsAmount() {
-		try {
-			ResultSet rs = sendQuery("SELECT count(*) FROM "+TABLE[LOG], true);
-			rs.next();
-			int anzahl = rs.getInt(1);
-			rs.close();
-			return anzahl;
-		}  catch (SQLException e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-	
-	Ereignis[] getLogs(boolean[] showEreignis, int limit) {
-		try {
-			
-			int anzahlShow = 0;
-			for(int i = 0; i < showEreignis.length; i++)
-				if(showEreignis[i])
-					anzahlShow++;
-			
-			StringBuilder builder = new StringBuilder();
-			int current = 0;
-			for(int i = 0; i < showEreignis.length; i++) {
-				
-				if(showEreignis[i]) {
-					builder.append(DB[LOG][LOG_TYP][0]+"="+i);
-					current++;
-					
-					if(current < anzahlShow)
-						builder.append(" OR ");
-				}
-			}
-			
-			if(anzahlShow == 0)
-				return new Ereignis[0];
-			
-			
-			ResultSet rs = sendQuery("SELECT count(*) FROM "+TABLE[LOG]+" WHERE "+builder.toString(), true);
-			rs.next();
-			int anzahl = rs.getInt(1);
-			rs.close();
-			
-			String s = "";
-			if(limit != -1 && limit < anzahl) {
-				s = " LIMIT "+limit;
-				anzahl = limit;
-			}
-			
-			rs = sendQuery("SELECT * FROM "+TABLE[LOG]+" WHERE "+builder.toString()+" ORDER BY "+DB[LOG][LOG_DATUM][0]+" DESC"+s, true);
-			
-			Ereignis[] output = new Ereignis[anzahl];
-			SimpleDateFormat format = Timeformats.complete();
-			for(int i = 0; i < anzahl; i++) {
-				rs.next();
-				
-				String datum = format.format(rs.getTimestamp(DB[LOG][LOG_DATUM][0]));
-				String ereignis = rs.getString(DB[LOG][LOG_EREIGNIS][0]);
-				int typ = rs.getInt(DB[LOG][LOG_TYP][0]);
-				
-				output[i] = new Ereignis(datum, ereignis, typ);
-			}
-			
-			return output;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			
-			return null;
-		}
-	}
-	
 	void addLog(String ereignis, int typ) {
 		try {
 			Object[] input = {typ,ereignis};
 			int[] type = {TYPE_INT,TYPE_STRING};
 			sendQueryPrepared("INSERT INTO "+TABLE[LOG]+"("+DB[LOG][LOG_TYP][0]+","+DB[LOG][LOG_EREIGNIS][0]+") VALUES(?,?)",input,type,false);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	void clearLog(int days) {
-		try {
-			sendQuery("DELETE FROM "+TABLE[LOG]+" WHERE "+DB[LOG][LOG_DATUM][0]+" < (NOW() - INTERVAL "+days+" DAY)", false);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
