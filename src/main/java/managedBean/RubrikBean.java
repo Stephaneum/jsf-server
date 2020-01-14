@@ -68,7 +68,7 @@ public class RubrikBean {
 	
 	public String deleteRubrik() {
 		if(rubrik != null) {
-			Datenbank.deleteGruppe(rubrik.getGruppeID());
+			Datenbank.deleteGruppe(rubrik.getGruppeID(), rubrik.getName());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Rubrik gelöscht",rubrik.getName()) );
 			
 			Nutzer nutzer = Sitzung.getNutzer();
@@ -203,7 +203,7 @@ public class RubrikBean {
 	
 	public void deleteRubrik(Rubrik rubrik) {
 		if(rubrik != null) {
-			Datenbank.deleteGruppe(rubrik.getGruppeID());
+			Datenbank.deleteGruppe(rubrik.getGruppeID(), rubrik.getName());
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Rubrik gelöscht",rubrik.getName()) );
 			initRubriken();
 			topMenu.init();

@@ -2114,11 +2114,13 @@ public class Datenbank {
 	// false...Fehler
 	static public boolean createGruppe(int gruppeID, String name, int priory, String link, String password) {
 		Konsole.method("Datenbank.createGruppe()");
-		if(mysql == null) {
+		Nutzer nutzer = Sitzung.getNutzer();
+		if(mysql == null || nutzer == null) {
 			Konsole.noConnection();
 			return false;
 		} else {
 			TopMenu.triggerChanged();
+			addLog(Ereignis.CREATE_MENU, nutzer.getVorname()+" "+nutzer.getNachname()+" ("+nutzer.getRangString()+"), "+name);
 			return mysql.createGruppe(gruppeID,name,priory,link,password);
 		}
 	}
@@ -2173,14 +2175,20 @@ public class Datenbank {
 			addLog(Ereignis.TYPE_DELETE_FILE, nutzer.getVorname()+" "+nutzer.getNachname()+" ("+nutzer.getRangString()+"), Rubrik-Bild");
 		}
 	}
-	
-	static public void deleteGruppe(int gruppeID) {
+
+	/***
+	 *
+	 * @param gruppeID id of group to be deleted
+	 * @param name name of the group for logging purposes
+	 */
+	static public void deleteGruppe(int gruppeID, String name) {
 		Konsole.method("Datenbank.deleteGruppe("+gruppeID+")");
-		if(mysql == null) {
+		Nutzer nutzer = Sitzung.getNutzer();
+		if(mysql == null || nutzer == null) {
 			Konsole.noConnection();
-			return;
 		} else {
 			mysql.deleteGruppe(gruppeID);
+			addLog(Ereignis.DELETE_MENU, nutzer.getVorname()+" "+nutzer.getNachname()+" ("+nutzer.getRangString()+"), "+name);
 			TopMenu.triggerChanged();
 		}
 	}
@@ -2188,11 +2196,13 @@ public class Datenbank {
 	// false...Fehler
 	static public boolean editGruppe(int gruppeID, int parentID, String name, int priory, String link, String password, boolean genehmigt) {
 		Konsole.method("Datenbank.editGruppe()");
-		if(mysql == null) {
+		Nutzer nutzer = Sitzung.getNutzer();
+		if(mysql == null || nutzer == null) {
 			Konsole.noConnection();
 			return false;
 		} else {
 			TopMenu.triggerChanged();
+			addLog(Ereignis.EDIT_MENU, nutzer.getVorname()+" "+nutzer.getNachname()+" ("+nutzer.getRangString()+"), "+name);
 			return mysql.editGruppe(gruppeID, parentID, name,priory,link,password,genehmigt);
 		}
 	}
@@ -2445,9 +2455,9 @@ public class Datenbank {
 	
 	//--------------- Logs ---------------------------------------------------
 	
-	static public void addLog(int typ, String ereignis) {
+	static public void addLog(Ereignis type, String ereignis) {
 		Konsole.method("Datenbank.addLog()");
-		mysql.addLog(ereignis, typ);
+		mysql.addLog(ereignis, type.id);
 	}
 	
 	//--------------- Stats ---------------------------------------------------

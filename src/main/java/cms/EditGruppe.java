@@ -305,7 +305,7 @@ public class EditGruppe {
 	// (Haupt)gruppe, Link löschen
 	public void delete() {
 		
-		Datenbank.deleteGruppe(selectGruppeID);
+		Datenbank.deleteGruppe(selectGruppeID, selectGruppe);
 		
 		if(newURL != null)
 			Datenbank.cleanDateiBeitrag(); //Alle Dateien löschen, die keine NutzerID haben und mit keinem Beitrag verknüpft sind
