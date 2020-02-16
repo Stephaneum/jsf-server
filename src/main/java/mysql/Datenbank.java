@@ -816,9 +816,8 @@ public class Datenbank {
 	static private String prepareTermine(String raw) {
 		if(raw == null)
 			return "";
-		
-		raw = raw.replace("<p>", "").replace("</p>","\\").replace("<br>", "\\");
-		String[] events = raw.split("\\\\");
+
+		String[] events = raw.split("\n");
 		StringBuilder builder = new StringBuilder();
 		boolean first = true;
 		for(String curr : events) {
