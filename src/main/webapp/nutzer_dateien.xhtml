@@ -7,16 +7,9 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<h:head>
-		<title>Privatspeicher#{konfig.suffixTitle}</title>
 		<f:metadata>
-    		<f:viewAction action="#{weiterleitung.login}" />
+			<f:viewAction action="#{weiterleitung.spring('cloud')}" />
 		</f:metadata>
-		<f:event type="preRenderView" listener="#{konfig.addHeader}" />
-		<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
-		<h:outputStylesheet library="css" name="#{konfig.css}" />
-		<h:outputStylesheet library="css" name="fileLink.css" />
-		<h:outputScript library="js" name="topMenu.js" />
-		<h:outputScript library="js" name="preview.js" />
 	</h:head>
 	
 	<h:body style="background-color:#{themeService.backgroundColor};">
