@@ -173,9 +173,9 @@ public class SideMenu {
             }
             
             //Projekt
-            DefaultMenuItem itemMeineProjekte = new DefaultMenuItem("Projekte");
+            DefaultMenuItem itemMeineProjekte = new DefaultMenuItem("Gruppen");
             itemMeineProjekte.setHref("/"+URLManager.PROJEKT+".xhtml");
-            itemMeineProjekte.setIcon("ui-icon-note");
+            itemMeineProjekte.setIcon("ui-icon-star");
             submenuGruppe.addElement(itemMeineProjekte);
              
             model.addElement(submenuGruppe);

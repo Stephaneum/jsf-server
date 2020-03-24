@@ -118,6 +118,26 @@ public class Weiterleitung {
 			return null;
 		}
 	}
+
+	public String springGroup() throws IOException {
+		Nutzer nutzer = Sitzung.getNutzer();
+		if(nutzer == null || nutzer.getRang() == Nutzer.RANG_GAST_NO_LOGIN) {
+			Konsole.antwort("Noch nicht eingeloggt! Leite nach login.xhtml weiter.");
+			return URLManager.LOGIN; //Weiterleiten
+		} else if (nutzer.getOpenProjekt() != null){
+			Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+			String oldParam = parameterMap.get("old");
+			if(oldParam == null) {
+				// redirect if not ?old
+				String token = Jwt.generateToken(Sitzung.getNutzer().getNutzer_id());
+				int id = nutzer.getOpenProjekt().getProjektID();
+				FacesContext.getCurrentInstance().getExternalContext().redirect("/groups/"+id+"?key=" + token);
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
 	
 	public String logout() {
   		Nutzer nutzer = Sitzung.getNutzer();

@@ -9,7 +9,7 @@
 	<h:head>
 		<title>#{projektOpen.projekt.name}#{konfig.suffixTitle}</title>
 		<f:metadata>
-    		<f:viewAction action="#{weiterleitung.noProjekt}" />
+			<f:viewAction action="#{weiterleitung.springGroup}" />
 		</f:metadata>
 		<f:event type="preRenderView" listener="#{konfig.addHeader}" />
 		<link rel="icon" type="image/png" href="#{resource['/img/favicon.png']}" />
