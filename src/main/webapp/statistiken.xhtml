@@ -434,12 +434,15 @@
 			   	 			<h5>Technologien</h5>
 			   	 		
 			   	 			<h:panelGrid columns="2" cellpadding="5">
+
+								<p:outputLabel id="infoFrontend1" value="Frontend-Framework:" />
+								<p:outputLabel id="infoFrontend2" value="Vue" />
 			   	 			
 			   	 				<p:outputLabel id="infoCSS1" value="CSS-Framework:" />
 								<p:outputLabel id="infoCSS2" value="MaterializeCSS" />
 					
 								<p:outputLabel id="infoFramework1" value="Backend-Framework:" />
-								<p:outputLabel id="infoFramework2" value="JavaServer Faces mit Primefaces" />
+								<p:outputLabel id="infoFramework2" value="JavaServer Faces mit Primefaces, sowie Spring" />
 								
 								<p:outputLabel id="infoWebserver1" value="Webserver:" />
 								<p:outputLabel id="infoWebserver2" value="#{konfig.webServer}" />
@@ -451,12 +454,14 @@
 								<p:outputLabel id="infoBetriebssystem2" value="Ubuntu (Linux)" />
 							        
 							</h:panelGrid>
+							<p:tooltip for="infoFrontend1" value="Im internen Bereich wurde das Frontend mit Vue entwickelt, was mehr Dynamik verspricht." escape="false" position="top"/>
+							<p:tooltip for="infoFrontend2" value="Im internen Bereich wurde das Frontend mit Vue entwickelt, was mehr Dynamik verspricht." escape="false" position="top"/>
 							<p:tooltip for="infoCSS1" value="Mit einer CSS-Framework kann das Designen der Webseite vereinfacht und beschleunigt werden." escape="false" position="top"/>
 			   	 			<p:tooltip for="infoCSS2" value="Mit einer CSS-Framework kann das Designen der Webseite vereinfacht und beschleunigt werden." escape="false" position="top"/>
-			   	 			<p:tooltip for="infoFramework1" value="Mithilfe von JavaServer Faces (JSF) werden Webseiten generiert." escape="false" position="top"/>
-			   	 			<p:tooltip for="infoFramework2" value="Mithilfe von JavaServer Faces (JSF) werden Webseiten generiert." escape="false" position="top"/>
-			   	 			<p:tooltip for="infoWebserver1" value="Tomcat reagiert auf HTTP(S)-Anfragen und leitet diese an JSF weiter." position="top"/>
-			   	 			<p:tooltip for="infoWebserver2" value="Tomcat reagiert auf HTTP(S)-Anfragen und leitet diese an JSF weiter." position="top"/>
+			   	 			<p:tooltip for="infoFramework1" value="In JSF und Spring wurde die Logik des Systems implementiert." escape="false" position="top"/>
+			   	 			<p:tooltip for="infoFramework2" value="In JSF und Spring wurde die Logik des Systems implementiert." escape="false" position="top"/>
+			   	 			<p:tooltip for="infoWebserver1" value="Tomcat reagiert auf HTTP(S)-Anfragen und leitet diese an JSF / Spring weiter." position="top"/>
+			   	 			<p:tooltip for="infoWebserver2" value="Tomcat reagiert auf HTTP(S)-Anfragen und leitet diese an JSF / Spring weiter." position="top"/>
 			   	 			<p:tooltip for="infoDatenbank1" value="In der Datenbank werden Informationen (Beiträge,Nutzer,usw.) gespeichert." position="top"/>
 			   	 			<p:tooltip for="infoDatenbank2" value="In der Datenbank werden Informationen (Beiträge,Nutzer,usw.) gespeichert." position="top"/>
 			   	 			<p:tooltip for="infoBetriebssystem1" value="Das Betriebssystem, das momentan auf dem Server läuft." position="top"/>

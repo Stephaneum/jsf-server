@@ -158,20 +158,6 @@ public class SideMenu {
             //Gruppen
             DefaultSubMenu submenuGruppe = new DefaultSubMenu("Gruppen");
             
-            //Klasse (alle außer Gäste)
-            if(Sitzung.getNutzer().getRang() != Nutzer.RANG_GAST) {
-            	DefaultMenuItem itemMeineKlasse;
-                if(Sitzung.getNutzer().getKlasse() != null) {
-                	itemMeineKlasse = new DefaultMenuItem("Klasse "+Sitzung.getNutzer().getKlasse());
-                } else {
-                	itemMeineKlasse = new DefaultMenuItem("Klassen");
-                }
-                
-                itemMeineKlasse.setHref("/"+URLManager.KLASSE+".xhtml");
-                itemMeineKlasse.setIcon("ui-icon-note");
-                submenuGruppe.addElement(itemMeineKlasse);
-            }
-            
             //Projekt
             DefaultMenuItem itemMeineProjekte = new DefaultMenuItem("Gruppen");
             itemMeineProjekte.setHref("/"+URLManager.PROJEKT+".xhtml");
