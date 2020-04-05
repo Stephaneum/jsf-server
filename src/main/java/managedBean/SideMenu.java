@@ -142,6 +142,11 @@ public class SideMenu {
             itemBeitrag.setHref("/"+URLManager.BEITRAG+".xhtml");
             itemBeitrag.setIcon("ui-icon-pencil");
             submenuNutzer.addElement(itemBeitrag);
+
+            DefaultMenuItem itemGruppen = new DefaultMenuItem("Gruppen");
+            itemGruppen.setHref("/"+URLManager.PROJEKT+".xhtml");
+            itemGruppen.setIcon("ui-icon-person");
+            submenuNutzer.addElement(itemGruppen);
              
             DefaultMenuItem itemSpeicher = new DefaultMenuItem("Dateien");
             itemSpeicher.setHref("/"+URLManager.DATEIEN+".xhtml");
@@ -154,17 +159,6 @@ public class SideMenu {
             submenuNutzer.addElement(itemDaten);
              
             model.addElement(submenuNutzer);
-            
-            //Gruppen
-            DefaultSubMenu submenuGruppe = new DefaultSubMenu("Gruppen");
-            
-            //Projekt
-            DefaultMenuItem itemMeineProjekte = new DefaultMenuItem("Gruppen");
-            itemMeineProjekte.setHref("/"+URLManager.PROJEKT+".xhtml");
-            itemMeineProjekte.setIcon("ui-icon-star");
-            submenuGruppe.addElement(itemMeineProjekte);
-             
-            model.addElement(submenuGruppe);
         } else {
         	//nicht angemeldet
             DefaultSubMenu submenuOption = new DefaultSubMenu("Menü");
