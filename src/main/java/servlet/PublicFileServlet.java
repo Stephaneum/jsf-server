@@ -94,7 +94,7 @@ public class PublicFileServlet extends HttpServlet {
 			// Schreibe content in response.
 			
 			//MIME-type
-			String endung = file.substring(file.lastIndexOf('.')+1, file.length()).toLowerCase();
+			String endung = file.substring(file.lastIndexOf('.')+1).toLowerCase();
 			String mime = Datei.toMime(endung);
 			
 			if(mime != null) {

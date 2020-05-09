@@ -286,7 +286,7 @@ public class Datei {
 			return "image/jpeg";
 		case "gif":
 			return "image/gif";
-		case "mp4:":
+		case "mp4":
 			return "video/mp4";
 		case "zip":
 			return "application/zip";
