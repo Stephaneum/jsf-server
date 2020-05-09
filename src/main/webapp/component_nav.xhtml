@@ -90,6 +90,7 @@
 
 			#internal-menu > li > a {
 				background-color: #e8f5e9;
+				padding-right: 20px;
 			}
 
 			#internal-menu > li > a:hover {
@@ -206,18 +207,19 @@
 							<ul id="internal-menu" class="z-depth-1" style="z-index: 200">
 								<h:panelGroup rendered="#{topMenu.admin}">
 									<li><a href="/admin_konfig.xhtml"><span><i class="material-icons">build</i>Konfiguration</span></a></li>
-									<li><a href="/admin_static.xhtml"><span><i class="material-icons">brush</i>Benutzerdefinierte Seiten</span></a></li>
-									<li><a href="/admin_rubriken.xhtml"><span><i class="material-icons">bookmark</i>Rubriken</span></a></li>
 									<li><a href="/admin_zugangscode.xhtml"><span><i class="material-icons">vpn_key</i>Zugangscodes</span></a></li>
 									<li><a href="/admin_nutzer.xhtml"><span><i class="material-icons">people</i>Nutzer</span></a></li>
-									<li><a href="/admin_logs.xhtml"><span><i class="material-icons">history</i>Logbuch</span></a></li>
+									<li><a href="/admin_logs.xhtml"><span><i class="material-icons">history</i>Logdaten</span></a></li>
 								</h:panelGroup>
 								<li class="internal-divider" />
+
+								<!-- cms -->
+								<li><a href="/nutzer_menu.xhtml"><span><i class="material-icons">device_hub</i>Menü</span></a></li>
 								<h:panelGroup rendered="#{topMenu.admin or topMenu.vertretungsplan}">
 									<li><a href="/konfig_vertretung.xhtml"><span><i class="material-icons">description</i>Vertretungsplan</span></a></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{topMenu.rubrikErstellen}">
-									<li><a href="/nutzer_rubrik.xhtml"><span><i class="material-icons">bookmark</i>Rubrik</span></a></li>
+								<h:panelGroup rendered="#{topMenu.admin}">
+								<li><a href="/admin_static.xhtml"><span><i class="material-icons">note_add</i>Seiten</span></a></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{topMenu.beitragAnzahl eq 0}">
 									<li><a href="/nutzer_beitrag.xhtml"><span><i class="material-icons">edit</i>Beiträge</span></a></li>
@@ -225,8 +227,10 @@
 								<h:panelGroup rendered="#{topMenu.beitragAnzahl ne 0}">
 									<li><a href="/nutzer_beitrag.xhtml"><span><i class="material-icons">edit</i>Beiträge (#{topMenu.beitragAnzahl})</span></a></li>
 								</h:panelGroup>
-								<li><a href="/projekt_all.xhtml"><span><i class="material-icons">people</i>Gruppen</span></a></li>
 								<li class="internal-divider" />
+
+								<!-- internal -->
+								<li><a href="/projekt_all.xhtml"><span><i class="material-icons">people</i>Gruppen</span></a></li>
 								<li><a href="/nutzer_dateien.xhtml"><span><i class="material-icons">folder</i>Dateien</span></a></li>
 								<li><a href="/nutzer_account.xhtml"><span><i class="material-icons">account_circle</i>Account</span></a></li>
 							</ul>
