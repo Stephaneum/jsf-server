@@ -8,6 +8,7 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 
+import io.jsonwebtoken.Claims;
 import mysql.Datenbank;
 import objects.Nutzer;
 import sitzung.Sitzung;
@@ -116,6 +117,18 @@ public class Weiterleitung {
 				FacesContext.getCurrentInstance().getExternalContext().redirect(name+"?key=" + token);
 			}
 			return null;
+		}
+	}
+
+	public String changeAccount() throws IOException {
+		Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+		String key = parameterMap.get("key");
+
+		if(key != null) {
+			Claims data = Jwt.getData(key);
+			int id = (int) data.get("id");
+			Datenbank.updateNutzerObjekt(id, null);
+			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
 		}
 	}
 
