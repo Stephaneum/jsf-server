@@ -130,6 +130,7 @@ public class Weiterleitung {
 			Datenbank.updateNutzerObjekt(id, null);
 			FacesContext.getCurrentInstance().getExternalContext().redirect("/");
 		}
+		return null;
 	}
 
 	public String springGroup() throws IOException {
