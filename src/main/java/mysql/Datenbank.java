@@ -1210,6 +1210,8 @@ public class Datenbank {
 		}
 		String vorname = (String) mysql.getDataTabelleNutzer(MySQLManager.VORNAME, nutzer_id);
 		String nachname = (String) mysql.getDataTabelleNutzer(MySQLManager.NACHNAME, nutzer_id);
+		if(email == null)
+			email = (String) mysql.getDataTabelleNutzer(MySQLManager.EMAIL, nutzer_id);
 		byte geschlecht = (byte) (int) mysql.getDataTabelleNutzer(MySQLManager.GESCHLECHT, nutzer_id);
 		
 		Nutzer nutzer = new Nutzer(rang, nutzer_id, klasse_id, vorname, nachname, klasse_name, klassenstufe, suffix, geschlecht,email);

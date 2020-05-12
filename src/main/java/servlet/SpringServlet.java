@@ -49,6 +49,9 @@ public class SpringServlet extends HttpServlet {
 						case "SYNC_PLAN":
 							Datenbank.syncPlan();
 							break;
+						case "CHANGE_ACCOUNT":
+							int id = (int) data.get("id");
+							Datenbank.updateNutzerObjekt(id, null);
 						default:
 							logger.severe("ERROR: unknown event type");
 					}
